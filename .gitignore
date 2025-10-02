@@ -1,0 +1,5 @@
+temp_files/
+node_modules
+dist
+assets
+public/profile.jpg

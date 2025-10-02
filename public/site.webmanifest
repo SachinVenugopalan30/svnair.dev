@@ -1,0 +1,32 @@
+{
+  "name": "Sachin - Developer & Photographer",
+  "short_name": "Sachin",
+  "description": "Personal portfolio of Sachin - Full-stack developer and photographer passionate about creating beautiful, functional experiences.",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#141423",
+  "background_color": "#141423",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

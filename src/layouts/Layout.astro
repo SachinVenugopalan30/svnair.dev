@@ -1,0 +1,164 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Personal portfolio of Sachin - Full-stack developer and photographer passionate about creating beautiful, functional experiences." } = Astro.props;
+const year = new Date().getFullYear();
+
+// Import smoothScroll module here so Astro bundles it into the build
+import '../utils/smoothScroll';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#141423" />
+    
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Preconnect to external fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="author" content="Sachin" />
+    <meta name="keywords" content="developer, photographer, portfolio, web development, React, TypeScript, Astro" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <title>{title}</title>
+  </head>
+  <body class="bg-background text-text antialiased">
+    <div class="relative min-h-screen">
+      <!-- Animated Silky Background -->
+      <div class="fixed inset-0 -z-10 silky-background"></div>
+      
+      <!-- Main content -->
+      <slot />
+
+      <!-- Scroll to top button -->
+      <button
+        id="scrollToTop"
+        class="fixed bottom-8 right-8 w-12 h-12 bg-accent hover:bg-accent-hover rounded-full shadow-lg opacity-0 invisible transition-all duration-300 flex items-center justify-center z-50 group"
+        aria-label="Scroll to top"
+      >
+        <svg 
+          class="w-5 h-5 text-ivory group-hover:scale-110 transition-transform duration-200" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+      </button>
+    </div>
+
+  <script>
+      // Scroll to top functionality
+      const scrollToTopBtn = document.getElementById('scrollToTop');
+      
+      if (scrollToTopBtn) {
+        const onScroll = () => {
+          if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.remove('opacity-0', 'invisible');
+            scrollToTopBtn.classList.add('opacity-100', 'visible');
+          } else {
+            scrollToTopBtn.classList.add('opacity-0', 'invisible');
+            scrollToTopBtn.classList.remove('opacity-100', 'visible');
+          }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        scrollToTopBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+
+  // Add page load animation (run after DOM is ready)
+      const applyLoadAnimation = () => {
+        // start from invisible and slightly translated
+        document.body.style.opacity = '0';
+        document.body.style.transform = 'translateY(20px)';
+        // apply transition and show
+        setTimeout(() => {
+          document.body.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+          document.body.style.opacity = '1';
+          document.body.style.transform = 'translateY(0)';
+        }, 100);
+      };
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        // DOM already ready
+        applyLoadAnimation();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyLoadAnimation);
+      }
+  </script>
+  </body>
+</html>
+
+<style>
+  /* Import global styles */
+  @import '../styles/global.css';
+  
+  /* Smooth scrolling enhancement */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(20, 20, 35, 0.8);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 58, 32, 0.6);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 58, 32, 0.8);
+  }
+
+  @keyframes animated-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .silky-background {
+    background: linear-gradient(-45deg, #031F2B, #021A24, #042F40, #031A20);
+    background-size: 400% 400%;
+    animation: animated-gradient 20s ease infinite;
+  }
+</style>

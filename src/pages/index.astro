@@ -1,0 +1,330 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation';
+import PageTransition from '../components/PageTransition';
+import ProjectCard from '../components/ProjectCard';
+import DynamicGreeting from '../components/DynamicGreeting';
+import AstroLogo from '../components/AstroLogo.astro';
+
+// Sample project data
+const projects = [
+  {
+    title: "Personal Portfolio (This Website!)",
+    description: "Modern, personal portfolio built with Astro, React, and Tailwind CSS. Features smooth animations for the cools.",
+    technologies: ["Astro", "React", "Tailwind CSS", "TypeScript", "Framer Motion"],
+    githubUrl: "https://github.com/SachinVenugopalan30/portfolio",
+    liveUrl: "https://svnair.dev"
+  },
+  {
+    title: "DyslexiQuest",
+    description: "A gamified way for children with Dyslexia to learn while playing simple text-based games.",
+    technologies: ["React", "Python", "FastAPI", "Gemini"],
+    githubUrl: "https://github.com/SachinVenugopalan30/DyslexiQuest",
+    liveUrl: ""
+  },
+  {
+    title: "py-tf2-currency",
+    description: "A type-safe library used for currency conversions in Python.",
+    technologies: ["Python"],
+    githubUrl: "https://github.com/SachinVenugopalan30/py_tf2_currency"
+  }
+];
+
+const skills = [
+  "JavaScript", "TypeScript", "React", "Astro", 
+  "Node.js", "Python", "FastAPI", "PostgreSQL", "MongoDB",
+  "Docker", "AWS", "Tailwind CSS", "GCP", "Azure",
+  "Git", "CI/CD", "Machine Learning", "Artificial Intelligence"
+];
+---
+
+<Layout title="Sachin - Developer & Photographer">
+  <Navigation client:load />
+  
+  <PageTransition client:load>
+    <!-- Hero Section -->
+    <section id="hero" class="relative py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+      <div class="max-w-6xl mx-auto w-full">
+        <div class="grid lg:grid-cols-2 gap-12 xl:gap-16 items-center">
+          <!-- Left side - Text content -->
+          <div class="text-center lg:text-left space-y-8 max-w-xl mx-auto lg:mx-0 lg:pr-8">
+            <DynamicGreeting client:load />
+            
+            <p class="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-lg">
+              I love creating beautiful, functional experiences through code, analyzing data to uncover insights, 
+              capturing moments through the lens, and exploring life's many passions.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a 
+                href="#projects" 
+                class="btn-primary inline-flex items-center justify-center gap-2 group"
+                style="background: linear-gradient(135deg, #FF3A20 0%, #e6341c 100%); color: #ffffff; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 58, 32, 0.3); min-height: 48px; transition: all 0.3s ease;"
+              >
+                <span>View My Projects</span>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+              
+              <a 
+                href="/photography" 
+                class="btn-secondary inline-flex items-center justify-center gap-2 group"
+                style="background: rgba(255, 255, 255, 0.1); color: #ffffff; border: 2px solid rgba(255, 255, 255, 0.3); padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 16px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); min-height: 48px; transition: all 0.3s ease;"
+              >
+                <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                </svg>
+                <span>See My Photography</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right side - Profile picture -->
+          <div class="flex justify-center lg:justify-end lg:-mt-8">
+            <div class="relative group">
+              <!-- Animated background elements -->
+              <div class="absolute -inset-8 bg-gradient-to-r from-scarlet/20 to-ash-gray/20 rounded-full opacity-30 blur-xl animate-pulse"></div>
+              <div class="absolute -inset-4 bg-gradient-to-r from-scarlet/30 to-air-superiority-blue/30 rounded-full opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+              
+              <!-- Profile image container -->
+              <div class="relative w-80 h-80 rounded-full overflow-hidden glass border-2 border-ivory/20 shadow-2xl group-hover:shadow-scarlet/20 transition-all duration-500">
+                <!-- Profile image with fallback -->
+                <img 
+                  src="/profile.jpg" 
+                  alt="Profile Picture"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                
+                <!-- Fallback placeholder (hidden by default) -->
+                <div class="w-full h-full bg-gradient-to-br from-ash-gray/20 to-air-superiority-blue/20 flex items-center justify-center" style="display: none;">
+                  <div class="text-center space-y-4">
+                    <svg class="w-20 h-20 text-scarlet/60 mx-auto animate-float" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                    <p class="text-sm text-text-secondary">Profile Image</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Floating elements -->
+              <div class="absolute -top-4 -right-4 w-8 h-8 bg-scarlet rounded-full animate-bounce opacity-80"></div>
+              <div class="absolute -bottom-4 -left-4 w-6 h-6 bg-ash-gray rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto w-full">
+        <div class="glass rounded-2xl p-8 lg:p-12 card-hover w-full">
+          <h2 class="text-4xl sm:text-5xl font-bold text-ivory mb-12 text-center">
+            About Me
+          </h2>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+            <div class="lg:col-span-3 space-y-6">
+              <p class="text-xl text-text-secondary leading-relaxed">
+                Data is the foundation of every function in today’s world. I specialize in processing data and transforming it into actionable insights that drive informed decisions.
+                Coming with nearly 5 years of work experience, I am currently pursing my Master's in Computer Science at
+                <a href="https://asu.edu" class="link-inline" target="_blank" rel="noopener noreferrer">Arizona State University</a>.
+              </p>
+              <p class="text-xl text-text-secondary leading-relaxed">
+                This website is what I'm trying to build while also learning 
+                web development. In the not so distant future, I'd love to build applications 
+                that are not just functional and visually appealing, but also tell a story.
+              </p>
+              
+              <p class="text-xl text-text-secondary leading-relaxed">
+                When I'm not coding, you can find me out in the wild, exploring new places 
+                and showing other people the world through my lens.
+              </p>
+              
+              <div class="flex items-center gap-4 p-5 bg-scarlet/10 rounded-lg border border-scarlet/30 mt-8">
+                <div class="w-16 h-16 bg-scarlet/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg class="w-8 h-8 text-scarlet" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-scarlet font-semibold text-lg">Always Learning</p>
+                  <p class="text-text-secondary">Constantly exploring new technologies and techniques</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="lg:col-span-2 glass p-6 rounded-xl">
+              <h3 class="text-2xl font-semibold text-ivory mb-6 flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-scarlet to-ash-gray rounded-full flex items-center justify-center">
+                  <svg class="w-5 h-5 text-ivory" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                  </svg>
+                </div>
+                Skills & Technologies
+              </h3>
+              
+              <div class="flex flex-wrap gap-3">
+                {skills.map((skill, index) => (
+                  <span 
+                    class="skill-tag px-4 py-2 bg-scarlet/10 text-scarlet border border-scarlet/30 rounded-full text-sm font-medium hover:bg-scarlet/20 hover:scale-105 transition-all duration-300 cursor-default"
+                    style={`animation-delay: ${index * 50}ms`}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto w-full">
+        <div class="glass rounded-2xl p-6 lg:p-8">
+          <div class="text-center mb-10">
+            <h2 class="text-4xl sm:text-5xl font-bold text-ivory mb-4">
+              Featured Projects
+            </h2>
+            <p class="text-lg text-text-secondary max-w-3xl mx-auto">
+              A collection of my recent work showcasing different technologies and creative solutions.
+            </p>
+          </div>
+          
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+            {projects.map((project, index) => (
+              <ProjectCard project={project} index={index} client:load />
+            ))}
+          </div>
+          
+          <div class="text-center">
+            <a 
+              href="https://github.com/SachinVenugopalan30" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="btn-primary inline-flex items-center gap-3 group"
+              style="background: linear-gradient(135deg, #FF3A20 0%, #e6341c 100%); color: #ffffff; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 58, 32, 0.3); min-height: 48px; transition: all 0.3s ease;"
+            >
+              <svg class="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
+              </svg>
+              <span>View All Projects on GitHub</span>
+              <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 sm:px-6 lg:px-8 border-t border-white/10">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center">
+          <p class="text-lg text-text-secondary flex items-center justify-center gap-2 flex-wrap">
+            Made with 
+            <span class="text-red-400 text-xl">❤️</span>,
+            <AstroLogo cls="w-6 h-6 align-text-bottom"/>,
+            <svg class="w-6 h-6 inline-block" viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="pythonGradient1" x1="12.959%" y1="12.039%" x2="79.639%" y2="78.201%">
+                  <stop offset="0%" style="stop-color:#387EB8"/>
+                  <stop offset="100%" style="stop-color:#366994"/>
+                </linearGradient>
+                <linearGradient id="pythonGradient2" x1="19.128%" y1="20.579%" x2="90.742%" y2="88.429%">
+                  <stop offset="0%" style="stop-color:#FFE052"/>
+                  <stop offset="100%" style="stop-color:#FFC331"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#pythonGradient1)" d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072ZM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13Z"/>
+              <path fill="url(#pythonGradient2)" d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.519 33.897Zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13Z"/>
+            </svg>
+            and a little bit of 
+            <span class="text-2xl">🤖</span>
+            <span class="text-sm text-text-secondary/70">(a decent amount)</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </PageTransition>
+</Layout>
+
+<style>
+  /* Additional custom styles for this page */
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      #F1FEC6 0%,
+      #B6D6CC 25%,
+      #74A4BC 50%,
+      #B6D6CC 75%,
+      #F1FEC6 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0%, 100% {
+      background-position: 200% 0;
+    }
+    50% {
+      background-position: -200% 0;
+    }
+  }
+
+.link-inline {
+  color: inherit; /* Keeps color consistent */
+  text-decoration: underline;
+  text-decoration-color: #ffffff; /* Use your accent color */
+  text-underline-offset: 2px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+.link-inline:hover {
+  color: #FF3A20; /* Accent color on hover */
+  text-decoration-color: #e6341c;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skill-tag {
+  animation: fade-in-up 0.5s ease-out forwards;
+  opacity: 0;
+}
+</style>
+
+<script>
+  // Enable smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e: Event) {
+      e.preventDefault();
+      const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+      if (href) {
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+    });
+  });
+</script>
