@@ -177,27 +177,32 @@ import '../utils/smoothScroll';
         if (!this.config.enabled) return;
 
         try {
+          const payload = {
+            website: this.config.websiteId,
+            hostname: window.location.hostname,
+            language: navigator.language,
+            referrer: document.referrer || '',
+            screen: `${screen.width}x${screen.height}`,
+            title: document.title,
+            url: window.location.pathname,
+            name: data.name || 'pageview'
+          };
+
+          console.debug('📤 Analytics: Sending payload', payload);
+
           const response = await fetch(`${this.config.apiUrl}/api/send`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'User-Agent': navigator.userAgent,
             },
-            body: JSON.stringify({
-              website: this.config.websiteId,
-              url: window.location.pathname,
-              referrer: document.referrer,
-              hostname: window.location.hostname,
-              language: navigator.language,
-              screen: `${screen.width}x${screen.height}`,
-              ...data
-            })
+            body: JSON.stringify(payload)
           });
           
           if (response.ok) {
             console.log('✅ Analytics: Unique visit tracked successfully');
           } else {
-            console.debug('❌ Analytics: Server responded with', response.status);
+            const errorText = await response.text();
+            console.debug('❌ Analytics: Server responded with', response.status, errorText);
           }
         } catch (error) {
           console.debug('❌ Analytics tracking failed:', error);
@@ -221,9 +226,7 @@ import '../utils/smoothScroll';
         }
 
         await this.sendTrackingData({
-          name: pageName || document.title,
-          type: 'pageview',
-          visitor_hash: this.generateVisitorHash()
+          name: 'pageview'
         });
 
         this.markAsVisited();
