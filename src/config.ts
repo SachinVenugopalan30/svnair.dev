@@ -7,6 +7,7 @@ export const config = {
   
   // Social Media Links (only filled links will be displayed)
   socialMedia: {
+    github: "https://github.com/SachinVenugopalan30", // Add your GitHub URL here
     instagram: "https://www.instagram.com/sachin_venugopalan", // Add your Instagram URL here
     linkedin: "https://linkedin.com/in/sachin-v-04824381", // Add your LinkedIn URL here
     steam: "https://steamcommunity.com/profiles/76561198130990555", // Add your Steam profile URL here
