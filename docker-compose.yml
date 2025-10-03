@@ -2,7 +2,12 @@ version: '3.8'
 
 services:
   portfolio:
-    build: .
+    build:
+      context: .
+      args:
+        - PUBLIC_UMAMI_WEBSITE_ID=${PUBLIC_UMAMI_WEBSITE_ID}
+        - PUBLIC_UMAMI_API_URL=${PUBLIC_UMAMI_API_URL}
+        - PUBLIC_ANALYTICS_ENABLED=${PUBLIC_ANALYTICS_ENABLED}
     container_name: sachin-portfolio
     restart: unless-stopped
     ports:

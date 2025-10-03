@@ -7,6 +7,16 @@ WORKDIR /app
 # Set environment variables for build
 ENV NODE_ENV=production
 
+# Accept build arguments for Umami analytics
+ARG PUBLIC_UMAMI_WEBSITE_ID
+ARG PUBLIC_UMAMI_API_URL  
+ARG PUBLIC_ANALYTICS_ENABLED
+
+# Set them as environment variables for the build process
+ENV PUBLIC_UMAMI_WEBSITE_ID=$PUBLIC_UMAMI_WEBSITE_ID
+ENV PUBLIC_UMAMI_API_URL=$PUBLIC_UMAMI_API_URL
+ENV PUBLIC_ANALYTICS_ENABLED=$PUBLIC_ANALYTICS_ENABLED
+
 # Copy package files (package.json and bun.lockb)
 COPY package.json bun.lockb* ./
 
@@ -16,7 +26,13 @@ RUN bun install --frozen-lockfile
 # Copy source code
 COPY . .
 
-# Build the project with Bun (Astro build will include src/utils/smoothScroll.ts if imported correctly)
+# Debug: Show environment variables during build
+RUN echo "=== Build Environment ===" && \
+    echo "PUBLIC_UMAMI_WEBSITE_ID: $PUBLIC_UMAMI_WEBSITE_ID" && \
+    echo "PUBLIC_UMAMI_API_URL: $PUBLIC_UMAMI_API_URL" && \
+    echo "PUBLIC_ANALYTICS_ENABLED: $PUBLIC_ANALYTICS_ENABLED"
+
+# Build the project with Bun (Astro build will include analytics env vars)
 RUN bun run build
 
 # Debug: List the build output

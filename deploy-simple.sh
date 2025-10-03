@@ -53,7 +53,7 @@ echo -e "${YELLOW}🛑 Stopping any existing containers...${NC}"
 docker-compose -f docker-compose.simple.yml down 2>/dev/null || true
 
 echo -e "${YELLOW}🏗️  Building and starting containers...${NC}"
-docker-compose -f docker-compose.simple.yml up --build -d
+docker-compose -f docker-compose.simple.yml up --build -d --force-recreate
 
 # Wait for services to start
 echo -e "${YELLOW}⏳ Waiting for services to start...${NC}"
