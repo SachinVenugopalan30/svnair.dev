@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageTransition from '../components/PageTransition';
+import SocialMediaBar from '../components/SocialMediaBar';
 ---
 
 <Layout title="Photography - Sachin" description="Capturing life's beautiful moments through the lens. A showcase of my photography work and visual storytelling.">
@@ -125,6 +126,11 @@ import PageTransition from '../components/PageTransition';
               <p class="text-text-secondary mb-4">
                 This gallery will be integrated with a content management system for easy photo uploads and organization.
               </p>
+            </div>
+            
+            <!-- Social Media Bar -->
+            <div class="pt-8">
+              <SocialMediaBar client:load />
             </div>
           </div>
         </div>
