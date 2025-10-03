@@ -4,3 +4,4 @@ dist
 assets
 public/profile.jpg
 CONTEXT.md
+.env

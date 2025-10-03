@@ -59,26 +59,44 @@ import '../utils/smoothScroll';
     </div>
 
   <script>
+    // Import analytics functions
+    import { initAnalytics, trackVisit, getAnalyticsConfig } from '../utils/analytics';
 
-  // Add page load animation (run after DOM is ready)
-      const applyLoadAnimation = () => {
-        // start from invisible and slightly translated
-        document.body.style.opacity = '0';
-        document.body.style.transform = 'translateY(20px)';
-        // apply transition and show
+    // Add page load animation (run after DOM is ready)
+    const applyLoadAnimation = () => {
+      // start from invisible and slightly translated
+      document.body.style.opacity = '0';
+      document.body.style.transform = 'translateY(20px)';
+      // apply transition and show
+      setTimeout(() => {
+        document.body.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        document.body.style.opacity = '1';
+        document.body.style.transform = 'translateY(0)';
+      }, 100);
+    };
+
+    // Initialize analytics and track visit
+    const initializeAnalytics = () => {
+      const config = getAnalyticsConfig();
+      if (config.enabled) {
+        initAnalytics(config);
+        // Track visit after a short delay to ensure page is fully loaded
         setTimeout(() => {
-          document.body.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-          document.body.style.opacity = '1';
-          document.body.style.transform = 'translateY(0)';
-        }, 100);
-      };
-
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        // DOM already ready
-        applyLoadAnimation();
-      } else {
-        document.addEventListener('DOMContentLoaded', applyLoadAnimation);
+          trackVisit();
+        }, 1000);
       }
+    };
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      // DOM already ready
+      applyLoadAnimation();
+      initializeAnalytics();
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        applyLoadAnimation();
+        initializeAnalytics();
+      });
+    }
   </script>
   </body>
 </html>
