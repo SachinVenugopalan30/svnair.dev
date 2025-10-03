@@ -12,18 +12,52 @@ echo "=================================="
 
 # Function to show help
 show_help() {
-    echo "Usage: ./deploy.sh [OPTIONS] <domain> <email>"
+    echo "Usage: ./deploy.sh [OPTIONS]"
     echo ""
     echo "Options:"
     echo "  --prod           Use production configuration with GitHub Container Registry"
     echo "  --local          Use local build (default)"
     echo "  --help           Show this help message"
     echo ""
+    echo "Prerequisites:"
+    echo "  Make sure .env file exists with DOMAIN and ACME_EMAIL configured"
+    echo ""
     echo "Examples:"
-    echo "  ./deploy.sh yourdomain.com your-email@example.com"
-    echo "  ./deploy.sh --prod yourdomain.com your-email@example.com"
-    echo "  ./deploy.sh --local yourdomain.com your-email@example.com"
+    echo "  ./deploy.sh"
+    echo "  ./deploy.sh --prod"
+    echo "  ./deploy.sh --local"
 }
+
+# Check if .env file exists
+if [ ! -f .env ]; then
+    echo -e "${RED}❌ Error: .env file not found!${NC}"
+    echo -e "${YELLOW}Please create a .env file with the following variables:${NC}"
+    echo "DOMAIN=yourdomain.com"
+    echo "ACME_EMAIL=your-email@example.com"
+    echo ""
+    echo "You can copy from .env.example:"
+    echo "cp .env.example .env"
+    exit 1
+fi
+
+# Load environment variables from .env file
+set -a  # automatically export all variables
+source .env
+set +a
+
+# Validate required environment variables
+if [ -z "$DOMAIN" ]; then
+    echo -e "${RED}❌ Error: DOMAIN not set in .env file${NC}"
+    exit 1
+fi
+
+if [ -z "$ACME_EMAIL" ]; then
+    echo -e "${RED}❌ Error: ACME_EMAIL not set in .env file${NC}"
+    exit 1
+fi
+
+echo -e "${BLUE}📝 Using domain: $DOMAIN${NC}"
+echo -e "${BLUE}📧 Using email: $ACME_EMAIL${NC}"
 
 # Parse arguments
 PROD_MODE=false
@@ -47,26 +81,12 @@ while [[ $# -gt 0 ]]; do
             exit 1
             ;;
         *)
-            break
+            echo -e "${RED}❌ Unknown argument $1${NC}"
+            show_help
+            exit 1
             ;;
     esac
 done
-
-# Check if domain is provided
-if [ -z "$1" ]; then
-    echo -e "${RED}❌ Error: Please provide your domain name${NC}"
-    show_help
-    exit 1
-fi
-
-if [ -z "$2" ]; then
-    echo -e "${RED}❌ Error: Please provide your email for Let's Encrypt${NC}"
-    show_help
-    exit 1
-fi
-
-DOMAIN=$1
-EMAIL=$2
 COMPOSE_FILE="docker-compose.yml"
 
 if [ "$PROD_MODE" = true ]; then
@@ -76,14 +96,14 @@ else
     echo -e "${BLUE}🛠️  Local build mode enabled${NC}"
 fi
 
-echo -e "${YELLOW}📝 Creating environment file...${NC}"
+echo -e "${YELLOW}📝 Using existing .env configuration...${NC}"
 
-# Create .env file
-cat > .env << EOF
-DOMAIN=$DOMAIN
-ACME_EMAIL=$EMAIL
-COMPOSE_FILE=$COMPOSE_FILE
-EOF
+# Update COMPOSE_FILE in .env if it exists
+if grep -q "COMPOSE_FILE=" .env; then
+    sed -i "s|COMPOSE_FILE=.*|COMPOSE_FILE=$COMPOSE_FILE|" .env
+else
+    echo "COMPOSE_FILE=$COMPOSE_FILE" >> .env
+fi
 
 echo -e "${YELLOW}🔧 Creating Docker network...${NC}"
 docker network create traefik 2>/dev/null || echo "Network already exists"
@@ -126,7 +146,7 @@ if docker-compose -f $COMPOSE_FILE ps | grep -q "Up"; then
     echo "• Check logs: docker-compose -f $COMPOSE_FILE logs -f"
     echo "• Restart: docker-compose -f $COMPOSE_FILE restart"
     echo "• Stop: docker-compose -f $COMPOSE_FILE down"
-    echo "• Update: git pull && ./deploy.sh $([[ \"$PROD_MODE\" == true ]] && echo '--prod') $DOMAIN $EMAIL"
+    echo "• Update: git pull && ./deploy.sh $([[ \"$PROD_MODE\" == true ]] && echo '--prod')"
 else
     echo -e "${RED}❌ Some containers failed to start. Check logs:${NC}"
     docker-compose -f $COMPOSE_FILE logs

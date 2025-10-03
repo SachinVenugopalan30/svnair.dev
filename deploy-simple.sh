@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Simple deployment script for Docker-only setup
-# Usage: ./deploy-simple.sh yourdomain.com your-email@example.com
+# Usage: ./deploy-simple.sh
 
 # Colors for output
 RED='\033[0;31m'
@@ -13,31 +13,38 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}🚀 Simple Portfolio Deployment${NC}"
 echo "================================"
 
-# Check if domain is provided
-if [ -z "$1" ]; then
-    echo -e "${RED}❌ Error: Please provide your domain name${NC}"
-    echo "Usage: ./deploy-simple.sh yourdomain.com your-email@example.com"
+# Check if .env file exists
+if [ ! -f .env ]; then
+    echo -e "${RED}❌ Error: .env file not found!${NC}"
+    echo -e "${YELLOW}Please create a .env file with the following variables:${NC}"
+    echo "DOMAIN=yourdomain.com"
+    echo "ACME_EMAIL=your-email@example.com"
+    echo ""
+    echo "You can copy from .env.example:"
+    echo "cp .env.example .env"
     exit 1
 fi
 
-if [ -z "$2" ]; then
-    echo -e "${RED}❌ Error: Please provide your email for Let's Encrypt${NC}"
-    echo "Usage: ./deploy-simple.sh yourdomain.com your-email@example.com"
+# Load environment variables from .env file
+set -a  # automatically export all variables
+source .env
+set +a
+
+# Validate required environment variables
+if [ -z "$DOMAIN" ]; then
+    echo -e "${RED}❌ Error: DOMAIN not set in .env file${NC}"
     exit 1
 fi
 
-DOMAIN=$1
-EMAIL=$2
+if [ -z "$ACME_EMAIL" ]; then
+    echo -e "${RED}❌ Error: ACME_EMAIL not set in .env file${NC}"
+    exit 1
+fi
 
 echo -e "${BLUE}📝 Using domain: $DOMAIN${NC}"
-echo -e "${BLUE}📧 Using email: $EMAIL${NC}"
+echo -e "${BLUE}📧 Using email: $ACME_EMAIL${NC}"
 
-# Create .env file
-echo -e "${YELLOW}📝 Creating environment configuration...${NC}"
-cat > .env << EOF
-DOMAIN=$DOMAIN
-ACME_EMAIL=$EMAIL
-EOF
+echo -e "${YELLOW}📝 Using existing .env configuration...${NC}"
 
 echo -e "${YELLOW}🔧 Creating Docker network...${NC}"
 docker network create traefik 2>/dev/null || echo "Network 'traefik' already exists"
@@ -69,7 +76,7 @@ if docker-compose -f docker-compose.simple.yml ps | grep -q "Up"; then
     echo "• View logs: docker-compose -f docker-compose.simple.yml logs -f"
     echo "• Restart: docker-compose -f docker-compose.simple.yml restart"
     echo "• Stop: docker-compose -f docker-compose.simple.yml down"
-    echo "• Update: git pull && ./deploy-simple.sh $DOMAIN $EMAIL"
+    echo "• Update: git pull && ./deploy-simple.sh"
 else
     echo -e "${RED}❌ Some containers failed to start!${NC}"
     echo "Checking logs..."
