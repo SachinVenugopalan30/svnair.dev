@@ -177,25 +177,28 @@ import '../utils/smoothScroll';
         if (!this.config.enabled) return;
 
         try {
-          const payload = {
-            website: this.config.websiteId,
-            hostname: window.location.hostname,
-            language: navigator.language,
-            referrer: document.referrer || '',
-            screen: `${screen.width}x${screen.height}`,
-            title: document.title,
-            url: window.location.pathname,
-            name: data.name || 'pageview'
+          const requestData = {
+            type: 'event',
+            payload: {
+              website: this.config.websiteId,
+              hostname: window.location.hostname,
+              language: navigator.language,
+              referrer: document.referrer || '',
+              screen: `${screen.width}x${screen.height}`,
+              title: document.title,
+              url: window.location.pathname,
+              name: data.name || 'pageview'
+            }
           };
 
-          console.debug('📤 Analytics: Sending payload', payload);
+          console.debug('📤 Analytics: Sending request', requestData);
 
           const response = await fetch(`${this.config.apiUrl}/api/send`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(requestData)
           });
           
           if (response.ok) {
