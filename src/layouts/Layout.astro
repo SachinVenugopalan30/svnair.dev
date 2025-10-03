@@ -87,10 +87,16 @@ import '../utils/smoothScroll';
   }}>
     // Analytics configuration from environment variables
     const ANALYTICS_CONFIG = {
-      websiteId: websiteId,
-      apiUrl: apiUrl,
-      enabled: enabled === 'true' && websiteId && apiUrl
+      websiteId: websiteId || '',
+      apiUrl: apiUrl || '',
+      enabled: (enabled === 'true' || enabled === true) && websiteId && apiUrl
     };
+
+    console.log('🔧 Analytics: Config loaded', {
+      websiteId: ANALYTICS_CONFIG.websiteId ? ANALYTICS_CONFIG.websiteId.slice(0, 8) + '...' : 'missing',
+      apiUrl: ANALYTICS_CONFIG.apiUrl || 'missing',
+      enabled: ANALYTICS_CONFIG.enabled
+    });
 
     // Privacy-focused analytics implementation
     class PrivateAnalytics {
@@ -171,7 +177,7 @@ import '../utils/smoothScroll';
         if (!this.config.enabled) return;
 
         try {
-          await fetch(`${this.config.apiUrl}/api/send`, {
+          const response = await fetch(`${this.config.apiUrl}/api/send`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -187,7 +193,12 @@ import '../utils/smoothScroll';
               ...data
             })
           });
-          console.log('✅ Analytics: Unique visit tracked');
+          
+          if (response.ok) {
+            console.log('✅ Analytics: Unique visit tracked successfully');
+          } else {
+            console.debug('❌ Analytics: Server responded with', response.status);
+          }
         } catch (error) {
           console.debug('❌ Analytics tracking failed:', error);
         }
@@ -240,6 +251,8 @@ import '../utils/smoothScroll';
       console.debug('⚠️ Analytics: Disabled or not configured');
     }
   </script>
+
+
   </body>
 </html>
 
