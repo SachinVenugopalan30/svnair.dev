@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation';
 import PageTransition from '../components/PageTransition';
 import ProjectCard from '../components/ProjectCard';
 import DynamicGreeting from '../components/DynamicGreeting';
+import ExperienceTabs from '../components/ExperienceTabs';
 import AstroLogo from '../components/AstroLogo.astro';
+import SocialMediaBar from '../components/SocialMediaBar';
+import experienceData from '../../experience.json';
+import { config } from '../config';
 
 // Sample project data
 const projects = [
@@ -39,8 +42,6 @@ const skills = [
 ---
 
 <Layout title="Sachin - Developer & Photographer">
-  <Navigation client:load />
-  
   <PageTransition client:load>
     <!-- Hero Section -->
     <section id="hero" class="relative py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
@@ -118,15 +119,15 @@ const skills = [
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-24 px-4 sm:px-6 lg:px-8">
+    <section id="about" class="py-8 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto w-full">
         <div class="glass rounded-2xl p-8 lg:p-12 card-hover w-full">
-          <h2 class="text-4xl sm:text-5xl font-bold text-ivory mb-12 text-center">
+          <h2 class="text-4xl sm:text-5xl font-bold text-ivory mb-6 text-center">
             About Me
           </h2>
           
-          <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
-            <div class="lg:col-span-3 space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+            <div class="lg:col-span-3 space-y-5">
               <p class="text-xl text-text-secondary leading-relaxed">
                 Data is the foundation of every function in today’s world. I specialize in processing data and transforming it into actionable insights that drive informed decisions.
                 Coming with nearly 5 years of work experience, I am currently pursing my Master's in Computer Science at
@@ -182,11 +183,14 @@ const skills = [
       </div>
     </section>
 
+    <!-- Experience Section -->
+    <ExperienceTabs experience={experienceData} client:load />
+
     <!-- Projects Section -->
-    <section id="projects" class="py-16 px-4 sm:px-6 lg:px-8">
+    <section id="projects" class="py-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-6xl mx-auto w-full">
         <div class="glass rounded-2xl p-6 lg:p-8">
-          <div class="text-center mb-10">
+          <div class="text-center mb-8">
             <h2 class="text-4xl sm:text-5xl font-bold text-ivory mb-4">
               Featured Projects
             </h2>
@@ -222,32 +226,80 @@ const skills = [
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-8 px-4 sm:px-6 lg:px-8 border-t border-white/10">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center">
-          <p class="text-lg text-text-secondary flex items-center justify-center gap-2 flex-wrap">
-            Made with 
-            <span class="text-red-400 text-xl">❤️</span>,
-            <AstroLogo cls="w-6 h-6 align-text-bottom"/>,
-            <svg class="w-6 h-6 inline-block" viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="pythonGradient1" x1="12.959%" y1="12.039%" x2="79.639%" y2="78.201%">
-                  <stop offset="0%" style="stop-color:#387EB8"/>
-                  <stop offset="100%" style="stop-color:#366994"/>
-                </linearGradient>
-                <linearGradient id="pythonGradient2" x1="19.128%" y1="20.579%" x2="90.742%" y2="88.429%">
-                  <stop offset="0%" style="stop-color:#FFE052"/>
-                  <stop offset="100%" style="stop-color:#FFC331"/>
-                </linearGradient>
-              </defs>
-              <path fill="url(#pythonGradient1)" d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072ZM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13Z"/>
-              <path fill="url(#pythonGradient2)" d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.519 33.897Zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13Z"/>
-            </svg>
-            and a little bit of 
-            <span class="text-2xl">🤖</span>
-            <span class="text-sm text-text-secondary/70">(a decent amount)</span>
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto w-full text-center">
+        <div class="glass rounded-2xl p-8 lg:p-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-ivory mb-6">
+            Want to reach out?
+          </h2>
+          
+          <h3 class="text-4xl sm:text-6xl font-bold text-ivory mb-8">
+            Get In Touch
+          </h3>
+          
+          <p class="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto mb-12">
+            I'm currently looking for internships this coming Summer (2026), specifically in the Data Science or Software Engineering domain. 
+            If you what you find here is interesting, feel free to reach out and we can have a chat! :)
           </p>
+          
+          <div class="flex flex-col items-center gap-6">
+            <a 
+              href={`mailto:${config.email}`}
+              class="btn-primary inline-flex items-center justify-center gap-2 group"
+              style="background: transparent; color: #4ECDC4; border: 2px solid #4ECDC4; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 16px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; min-height: 48px;"
+              onmouseover="this.style.background='#4ECDC4'; this.style.color='#141423'"
+              onmouseout="this.style.background='transparent'; this.style.color='#4ECDC4'"
+            >
+              <span>Say Hello!</span>
+            </a>
+            
+            <!-- Social Media Bar -->
+            <SocialMediaBar client:load />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scroll to top button - Fixed at bottom right -->
+    <button
+      id="scrollToTopBtn"
+      class="fixed bottom-20 right-8 w-14 h-14 rounded-full transition-all duration-300 overflow-hidden group border-2 flex items-center justify-center z-50 shadow-lg hover:scale-110"
+      style="background: linear-gradient(135deg, #FF3A20 0%, #e6341c 100%); border-color: #FF3A20; color: #ffffff;"
+    >
+      <svg class="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 sm:px-6 lg:px-8 border-t border-white/10" style="padding-bottom: 6rem;">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col items-center gap-6">
+          <div class="text-center">
+            <p class="text-lg text-text-secondary flex items-center justify-center gap-2 flex-wrap">
+              Made with 
+              <span class="text-red-400 text-xl">❤️</span>,
+              <AstroLogo cls="w-6 h-6 align-text-bottom"/>,
+              <svg class="w-6 h-6 inline-block" viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="pythonGradient1" x1="12.959%" y1="12.039%" x2="79.639%" y2="78.201%">
+                    <stop offset="0%" style="stop-color:#387EB8"/>
+                    <stop offset="100%" style="stop-color:#366994"/>
+                  </linearGradient>
+                  <linearGradient id="pythonGradient2" x1="19.128%" y1="20.579%" x2="90.742%" y2="88.429%">
+                    <stop offset="0%" style="stop-color:#FFE052"/>
+                    <stop offset="100%" style="stop-color:#FFC331"/>
+                  </linearGradient>
+                </defs>
+                <path fill="url(#pythonGradient1)" d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072ZM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13Z"/>
+                <path fill="url(#pythonGradient2)" d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.519 33.897Zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13Z"/>
+              </svg>
+              and a little bit of 
+              <span class="text-2xl">🤖</span>
+              <span class="text-sm text-text-secondary/70">(a decent amount)</span>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
@@ -281,16 +333,35 @@ const skills = [
     }
   }
 
-.link-inline {
-  color: inherit; /* Keeps color consistent */
-  text-decoration: underline;
-  text-decoration-color: #ffffff; /* Use your accent color */
-  text-underline-offset: 2px;
-  transition: color 0.2s, text-decoration-color 0.2s;
+.link-inline,
+.custom-link {
+  position: relative;
+  display: inline-block;
+  color: #ccd6f6;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
-.link-inline:hover {
-  color: #FF3A20; /* Accent color on hover */
-  text-decoration-color: #e6341c;
+
+.link-inline::after,
+.custom-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #368A83;
+  transition: width 0.3s ease-out;
+}
+
+.link-inline:hover,
+.custom-link:hover {
+  color: #368A83;
+}
+
+.link-inline:hover::after,
+.custom-link:hover::after {
+  width: 100%;
 }
 
 @keyframes fade-in-up {
@@ -327,4 +398,15 @@ const skills = [
       }
     });
   });
+
+  // Scroll to top button functionality
+  const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+  if (scrollToTopBtn) {
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
 </script>

@@ -78,8 +78,8 @@ export default {
         xs: '2px',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Cal Sans', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Frutiger', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        display: ['Frutiger', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
     },
   },

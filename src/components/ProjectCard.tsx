@@ -32,7 +32,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }): ReactEleme
         scale: 1.02,
         transition: { duration: 0.3 }
       }}
-      className="group relative bg-card glass rounded-xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-scarlet/20"
+      className="group relative bg-card glass rounded-xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-scarlet/20 border border-white/10"
     >
       {/* Project Image */}
       <div className="relative h-48 bg-gradient-to-br from-ash-gray/10 to-air-superiority-blue/10 overflow-hidden">

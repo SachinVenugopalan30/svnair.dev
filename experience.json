@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "company": "Firstsource",
+    "link": "https://www.firstsource.com",
+    "position": "Senior Data Scientist",
+    "startDate": "October 2023",
+    "endDate": "April 2025",
+    "highlights": [
+      "Developed POC to successfully gain client contract",
+      "Automated a system to automatically score Generative AI Responses based on specific rules",
+      "Produced valuable insights from multiple different data sources to reduce client expenses"
+    ],
+    "technologies": [
+      "Python",
+      "Microsoft SQL Server Management",
+      "Azure OpenAI",
+      "Microsoft Excel",
+      "Jupyter Notebook",
+      "XGBoost",
+      "Regression"
+    ]
+  },
+  {
+    "id": 2,
+    "company": "Firstsource",
+    "link": "https://www.firstsource.com",
+    "position": "Data Scientist",
+    "startDate": "August 2020",
+    "endDate": "October 2023",
+    "highlights": [
+      "Spearheaded development of a web-based Machine Learning forecasting platform",
+      "Automated forecasting piplines to increase efficieny and reduce manual work",
+      "Developed resume parsing with system Natural Language Processing to efficiently mark valid resumes"
+    ],
+    "technologies": [
+      "Python",
+      "NLTK",
+      "Google Cloud Platform",
+      "Jenkins",
+      "NumPy",
+      "SciPy",
+      "Matplotlib"
+    ]
+  }
+]

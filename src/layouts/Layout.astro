@@ -1,4 +1,6 @@
 ---
+import Navigation from '../components/Navigation';
+
 export interface Props {
   title: string;
   description?: string;
@@ -49,50 +51,14 @@ import '../utils/smoothScroll';
       <!-- Animated Silky Background -->
       <div class="fixed inset-0 -z-10 silky-background"></div>
       
+      <!-- Navigation -->
+      <Navigation client:load />
+      
       <!-- Main content -->
       <slot />
-
-      <!-- Scroll to top button -->
-      <button
-        id="scrollToTop"
-        class="fixed bottom-8 right-8 w-12 h-12 bg-accent hover:bg-accent-hover rounded-full shadow-lg opacity-0 invisible transition-all duration-300 flex items-center justify-center z-50 group"
-        aria-label="Scroll to top"
-      >
-        <svg 
-          class="w-5 h-5 text-ivory group-hover:scale-110 transition-transform duration-200" 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-      </button>
     </div>
 
   <script>
-      // Scroll to top functionality
-      const scrollToTopBtn = document.getElementById('scrollToTop');
-      
-      if (scrollToTopBtn) {
-        const onScroll = () => {
-          if (window.pageYOffset > 300) {
-            scrollToTopBtn.classList.remove('opacity-0', 'invisible');
-            scrollToTopBtn.classList.add('opacity-100', 'visible');
-          } else {
-            scrollToTopBtn.classList.add('opacity-0', 'invisible');
-            scrollToTopBtn.classList.remove('opacity-100', 'visible');
-          }
-        };
-
-        window.addEventListener('scroll', onScroll, { passive: true });
-
-        scrollToTopBtn.addEventListener('click', () => {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        });
-      }
 
   // Add page load animation (run after DOM is ready)
       const applyLoadAnimation = () => {

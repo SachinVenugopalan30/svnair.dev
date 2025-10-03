@@ -335,11 +335,8 @@ const Logo: React.FC<LogoProps> = ({
   return (
     <div className={`flex items-center space-x-3 group ${className}`}>
       <div className="relative flex items-center justify-center">
-        {/* Glow effect background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-scarlet/30 to-ash-gray/30 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-125"></div>
-        
         {/* Logo sized to fit navigation - using fixed height constraint */}
-        <div className="relative group-hover:scale-105 transition-all duration-300 drop-shadow-lg flex items-center justify-center"
+        <div className="relative group-hover:scale-105 transition-all duration-300 flex items-center justify-center"
              style={{ width: 56, height: 56 }}>
           <svg 
             width={56} 
@@ -626,15 +623,12 @@ const Logo: React.FC<LogoProps> = ({
       
       {variant === 'full' && (
         <div className="hidden sm:block flex-shrink-0" style={{ minWidth: '240px', width: 'auto' }}>
-          <div className="text-lg font-bold text-white/90 bg-gradient-to-r from-ash-gray via-ivory to-air-superiority-blue bg-clip-text text-transparent tracking-wide group-hover:from-scarlet group-hover:via-ivory group-hover:to-ash-gray transition-all duration-700 drop-shadow-sm whitespace-nowrap" style={{ 
-            minWidth: '240px',
-            animation: 'gentle-glow 3s ease-in-out infinite alternate',
-            textShadow: '0 0 10px rgba(255, 255, 255, 0.4), 0 0 20px rgba(182, 214, 204, 0.3), 0 0 30px rgba(116, 164, 188, 0.2)',
-            filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.2))'
+          <div className="text-lg font-bold text-white/90 bg-gradient-to-r from-ash-gray via-ivory to-air-superiority-blue bg-clip-text text-transparent tracking-wide group-hover:from-scarlet group-hover:via-ivory group-hover:to-ash-gray transition-all duration-700 whitespace-nowrap" style={{ 
+            minWidth: '240px'
           }}>
             Sachin Venugopalan Nair
           </div>
-          <div className="text-sm font-semibold text-white/90 bg-gradient-to-r from-ash-gray via-ivory to-air-superiority-blue bg-clip-text text-transparent tracking-wide mt-1 group-hover:from-scarlet group-hover:via-ivory group-hover:to-ash-gray transition-all duration-300 drop-shadow-sm whitespace-nowrap" style={{ minWidth: '240px' }}>
+          <div className="text-sm font-semibold text-white/90 bg-gradient-to-r from-ash-gray via-ivory to-air-superiority-blue bg-clip-text text-transparent tracking-wide mt-1 group-hover:from-scarlet group-hover:via-ivory group-hover:to-ash-gray transition-all duration-300 whitespace-nowrap" style={{ minWidth: '240px' }}>
             Developer & Photographer
           </div>
         </div>

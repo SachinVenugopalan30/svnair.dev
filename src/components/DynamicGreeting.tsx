@@ -22,11 +22,11 @@ const DynamicGreeting: React.FC = () => {
     const hour = now.getHours();
     
     if (hour >= 5 && hour < 12) {
-      setGreeting('Good Morning');
+      setGreeting('Good Morning,');
     } else if (hour >= 12 && hour < 17) {
-      setGreeting('Good Afternoon');
+      setGreeting('Good Afternoon,');
     } else {
-      setGreeting('Good Evening');
+      setGreeting('Good Evening,');
     }
   }, []);
 
@@ -122,15 +122,17 @@ const DynamicGreeting: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 w-full max-w-lg">
-      <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
-        <span className="block text-ivory">{greeting}, I'm Sachin.</span>
-        <span className="block bg-gradient-to-r from-scarlet via-ash-gray to-air-superiority-blue bg-clip-text text-transparent animate-pulse">
-          Sachin! 👋🏼
+    <div className="space-y-4 w-full max-w-lg">
+      <h1 className="font-bold leading-tight">
+        <span className="block text-lg sm:text-xl lg:text-2xl mb-2" style={{ color: '#368A83' }}>
+          {greeting}
+        </span>
+        <span className="block text-3xl sm:text-4xl lg:text-5xl xl:text-6xl" style={{ color: '#CCD6F6' }}>
+          I'm Sachin
         </span>
       </h1>
       
-      <div className="text-lg sm:text-xl lg:text-2xl font-semibold flex items-center flex-wrap gap-2 mt-4 mb-12">
+      <div className="text-lg sm:text-xl lg:text-2xl font-semibold flex items-center flex-wrap gap-2 mt-6 mb-12">
         <span className="text-shimmer">
           I'm a
         </span>
