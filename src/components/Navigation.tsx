@@ -119,12 +119,11 @@ const Navigation: React.FC = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="relative w-11 h-11 rounded-2xl bg-raisin-black/80 border border-ivory/30 flex items-center justify-center hover:text-scarlet hover:bg-raisin-black focus:outline-none focus:ring-2 focus:ring-scarlet/50 transition-all duration-300 group"
-              style={{ color: '#EFF6E0' }}
+              className="w-11 h-11 flex items-center justify-center hover:text-scarlet focus:outline-none focus:ring-2 focus:ring-scarlet/50 transition-all duration-300 bg-transparent border-none p-0"
+              style={{ color: '#EFF6E0', background: 'transparent', border: 'none' }}
               aria-label="Toggle menu"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-scarlet/10 to-ash-gray/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <svg className="h-5 w-5 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -140,7 +139,7 @@ const Navigation: React.FC = () => {
       <div className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${
         isOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
       }`}>
-        <div className="mx-4 mt-3 mb-1 p-4 bg-raisin-black/90 rounded-2xl border border-ivory/20">
+        <div className="mx-4 mt-3 mb-1 p-4 glass rounded-2xl border border-white/20 backdrop-blur-xl shadow-2xl">
           <div className="space-y-2">
             {navItems.map((item, index) => (
               <a

@@ -96,17 +96,11 @@ jobs:
           # Navigate to project directory
           cd ${{ secrets.DEPLOY_PATH || '/opt/PersonalBlog' }}
           
-          # Pull latest changes
-          git pull origin main
-          
-          # Update the image in docker-compose
-          sed -i 's|build: \.|image: ghcr.io/${{ github.repository }}:latest|g' docker-compose.yml
-          
           # Pull the latest image
-          docker pull ghcr.io/${{ github.repository }}:latest
+          docker-compose -f docker-compose.prod.yml pull
           
           # Restart the services
-          docker-compose up -d --force-recreate portfolio
+          docker-compose -f docker-compose.prod.yml up -d --force-recreate portfolio
           
           # Clean up old images
           docker image prune -f

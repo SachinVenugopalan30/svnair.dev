@@ -2,14 +2,7 @@ version: '3.8'
 
 services:
   portfolio:
-    # For local development, use build: .
-    # For production with GitHub Actions, this will be replaced with: image: ghcr.io/sachinvenugopalan30/personalblog:latest
-    build:
-      context: .
-      args:
-        - PUBLIC_UMAMI_WEBSITE_ID=${PUBLIC_UMAMI_WEBSITE_ID}
-        - PUBLIC_UMAMI_API_URL=${PUBLIC_UMAMI_API_URL}
-        - PUBLIC_ANALYTICS_ENABLED=${PUBLIC_ANALYTICS_ENABLED}
+    image: ghcr.io/sachinvenugopalan30/personalblog:latest
     container_name: sachin-portfolio
     restart: unless-stopped
     labels:

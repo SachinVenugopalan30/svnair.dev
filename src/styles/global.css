@@ -281,3 +281,24 @@ nav a.no-underline:focus {
     left: 100%;
   }
 }
+
+/* Hamburger button - completely transparent */
+nav button[aria-label="Toggle menu"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+nav button[aria-label="Toggle menu"]:focus {
+  outline: 2px solid rgba(204, 41, 54, 0.5) !important;
+  outline-offset: 2px !important;
+}
