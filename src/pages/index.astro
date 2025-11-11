@@ -1,29 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import experienceData from '../../experience.json';
+import projectsData from '../../projects.json';
 import { config } from '../config';
-
-const projects = [
-  {
-    title: "Personal Website",
-    description: "Modern, personal portfolio built with Astro and Tailwind CSS.",
-    technologies: ["Astro", "Tailwind CSS", "TypeScript"],
-    githubUrl: "https://github.com/SachinVenugopalan30/portfolio",
-    liveUrl: "https://svnair.dev"
-  },
-  {
-    title: "DyslexiQuest",
-    description: "A gamified way for children with Dyslexia to learn while playing simple text-based games.",
-    technologies: ["React", "Python", "FastAPI", "Gemini"],
-    githubUrl: "https://github.com/SachinVenugopalan30/DyslexiQuest",
-  },
-  {
-    title: "Transcriptr",
-    description: "Full-Stack Web Application for downloading YouTube Transcripts and formatting the data for ease of use in RAG Pipelines/MCP Servers",
-    technologies: ["NextJS", "Python", "NLTK", "Redis", "PostgreSQL"],
-    githubUrl: "https://github.com/SachinVenugopalan30/transcriptr"
-  }
-];
 
 const skills = [
   "JavaScript", "TypeScript", "React", "Astro",
@@ -81,35 +60,55 @@ const skills = [
     <!-- Experience Section -->
     <section id="experience">
       <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 2rem;">Experience</h2>
-      {experienceData.map((exp) => (
-        <div class="card" style="margin-bottom: 1.5rem;">
-          <h3 style="font-size: 1.75rem; margin-bottom: 0.5rem;">
-            <a href={exp.link} target="_blank" rel="noopener noreferrer">{exp.company}</a>
-          </h3>
-          <p style="color: #ffc300; margin-bottom: 1rem;">
-            {exp.position} • {exp.startDate} - {exp.endDate}
-          </p>
-          <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
-            {exp.highlights.map((highlight) => (
-              <li style="margin-bottom: 0.5rem;">{highlight}</li>
-            ))}
-          </ul>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-            {exp.technologies.map((tech) => (
-              <span style="background: #001d3d; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">
-                {tech}
-              </span>
-            ))}
-          </div>
+      <div class="card experience-container">
+        <div class="experience-tabs">
+          {experienceData.map((exp, index) => (
+            <button
+              class={`experience-tab ${index === 0 ? 'active' : ''}`}
+              data-index={index}
+            >
+              <span class="company-name">{exp.company}</span>
+            </button>
+          ))}
         </div>
-      ))}
+
+        <div class="experience-content">
+          {experienceData.map((exp, index) => (
+            <div
+              class={`experience-panel ${index === 0 ? 'active' : ''}`}
+              data-index={index}
+            >
+              <h3 style="font-size: 1.75rem; margin-bottom: 0.5rem;">
+                <a href={exp.link} target="_blank" rel="noopener noreferrer" style="color: #ffd60a;">
+                  {exp.position}
+                </a>
+              </h3>
+              <p style="color: #ffc300; margin-bottom: 1rem;">
+                {exp.startDate} - {exp.endDate}
+              </p>
+              <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                {exp.highlights.map((highlight) => (
+                  <li style="margin-bottom: 0.75rem; line-height: 1.6;">{highlight}</li>
+                ))}
+              </ul>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {exp.technologies.map((tech) => (
+                  <span style="background: #001d3d; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem;">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
 
     <!-- Projects Section -->
     <section id="projects">
       <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 2rem;">Featured Projects</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-        {projects.map((project) => (
+        {projectsData.map((project) => (
           <div class="card">
             <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">{project.title}</h3>
             <p style="margin-bottom: 1rem;">{project.description}</p>
@@ -171,3 +170,122 @@ const skills = [
     </section>
   </div>
 </Layout>
+
+<style>
+  .experience-container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .experience-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-right: 2px solid #003566;
+    padding-right: 1rem;
+  }
+
+  .experience-tab {
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    color: #ffc300;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .experience-tab:hover {
+    background: rgba(0, 53, 102, 0.3);
+    border-left-color: #ffc300;
+  }
+
+  .experience-tab.active {
+    background: rgba(0, 53, 102, 0.5);
+    border-left-color: #ffd60a;
+    color: #ffd60a;
+  }
+
+  .experience-content {
+    position: relative;
+    min-height: 300px;
+  }
+
+  .experience-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .experience-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive design for mobile */
+  @media (max-width: 768px) {
+    .experience-container {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .experience-tabs {
+      flex-direction: row;
+      overflow-x: auto;
+      border-right: none;
+      border-bottom: 2px solid #003566;
+      padding-right: 0;
+      padding-bottom: 0.5rem;
+    }
+
+    .experience-tab {
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      padding: 0.75rem 1rem;
+    }
+
+    .experience-tab:hover,
+    .experience-tab.active {
+      border-left: none;
+      border-bottom-color: #ffd60a;
+    }
+  }
+</style>
+
+<script>
+  // Experience tabs functionality
+  const tabs = document.querySelectorAll('.experience-tab');
+  const panels = document.querySelectorAll('.experience-panel');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const index = tab.getAttribute('data-index');
+
+      // Remove active class from all tabs and panels
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      // Add active class to clicked tab and corresponding panel
+      tab.classList.add('active');
+      const activePanel = document.querySelector(`.experience-panel[data-index="${index}"]`);
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+    });
+  });
+</script>
