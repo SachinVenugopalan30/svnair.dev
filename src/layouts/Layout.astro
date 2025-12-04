@@ -19,7 +19,7 @@ import '../utils/smoothScroll';
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -27,13 +27,13 @@ import '../utils/smoothScroll';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#141423" />
-    
+
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Preconnect to external fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
+
     <!-- SEO Meta Tags -->
     <meta name="author" content="Sachin" />
     <meta name="keywords" content="developer, photographer, portfolio, web development, React, TypeScript, Astro" />
@@ -43,17 +43,17 @@ import '../utils/smoothScroll';
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    
+
     <title>{title}</title>
   </head>
   <body class="bg-background text-text antialiased">
     <div class="relative min-h-screen">
       <!-- Animated Silky Background -->
       <div class="fixed inset-0 -z-10 silky-background"></div>
-      
+
       <!-- Navigation -->
       <Navigation client:load />
-      
+
       <!-- Main content -->
       <slot />
     </div>
@@ -80,7 +80,7 @@ import '../utils/smoothScroll';
     }
   </script>
 
-  <script is:inline define:vars={{ 
+  <script is:inline define:vars={{
     websiteId: import.meta.env.PUBLIC_UMAMI_WEBSITE_ID,
     apiUrl: import.meta.env.PUBLIC_UMAMI_API_URL,
     enabled: import.meta.env.PUBLIC_ANALYTICS_ENABLED
@@ -148,7 +148,7 @@ import '../utils/smoothScroll';
         const today = new Date().toISOString().split('T')[0];
         const storageKey = `analytics_visit_${today}`;
         const visitorHash = this.generateVisitorHash();
-        
+
         try {
           const visitedHashes = JSON.parse(localStorage.getItem(storageKey) || '[]');
           return visitedHashes.includes(visitorHash);
@@ -161,7 +161,7 @@ import '../utils/smoothScroll';
         const today = new Date().toISOString().split('T')[0];
         const storageKey = `analytics_visit_${today}`;
         const visitorHash = this.generateVisitorHash();
-        
+
         try {
           const visitedHashes = JSON.parse(localStorage.getItem(storageKey) || '[]');
           if (!visitedHashes.includes(visitorHash)) {
@@ -170,6 +170,30 @@ import '../utils/smoothScroll';
           }
         } catch {
           // Ignore localStorage errors
+        }
+      }
+
+      getSessionId() {
+        const storageKey = 'umami_session_id';
+
+        try {
+          // Try to get existing session ID from sessionStorage
+          let sessionId = sessionStorage.getItem(storageKey);
+
+          if (!sessionId) {
+            // Generate new session ID using UUID v4 format
+            sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+              const r = Math.random() * 16 | 0;
+              const v = c === 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            });
+            sessionStorage.setItem(storageKey, sessionId);
+          }
+
+          return sessionId;
+        } catch {
+          // Fallback if sessionStorage is not available
+          return 'session-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
         }
       }
 
@@ -187,6 +211,7 @@ import '../utils/smoothScroll';
               screen: `${screen.width}x${screen.height}`,
               title: document.title,
               url: window.location.pathname,
+              id: this.getSessionId(),
               name: data.name || 'pageview'
             }
           };
@@ -200,7 +225,7 @@ import '../utils/smoothScroll';
             },
             body: JSON.stringify(requestData)
           });
-          
+
           if (response.ok) {
             console.log('✅ Analytics: Unique visit tracked successfully');
           } else {
@@ -240,7 +265,7 @@ import '../utils/smoothScroll';
     // Initialize analytics
     if (ANALYTICS_CONFIG.enabled) {
       const analytics = new PrivateAnalytics(ANALYTICS_CONFIG);
-      
+
       const initializeAnalytics = () => {
         console.log('🚀 Analytics: Initializing...');
         setTimeout(() => {
@@ -265,26 +290,26 @@ import '../utils/smoothScroll';
 <style>
   /* Import global styles */
   @import '../styles/global.css';
-  
+
   /* Smooth scrolling enhancement */
   html {
     scroll-behavior: smooth;
   }
-  
+
   /* Custom scrollbar for webkit browsers */
   ::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: rgba(20, 20, 35, 0.8);
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: rgba(255, 58, 32, 0.6);
     border-radius: 4px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 58, 32, 0.8);
   }
