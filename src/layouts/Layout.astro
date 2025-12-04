@@ -81,15 +81,15 @@ import '../utils/smoothScroll';
   </script>
 
   <script is:inline define:vars={{
-    websiteId: import.meta.env.PUBLIC_UMAMI_WEBSITE_ID,
-    apiUrl: import.meta.env.PUBLIC_UMAMI_API_URL,
-    enabled: import.meta.env.PUBLIC_ANALYTICS_ENABLED
+    websiteId: import.meta.env.PUBLIC_UMAMI_WEBSITE_ID || '',
+    apiUrl: import.meta.env.PUBLIC_UMAMI_API_URL || '',
+    analyticsEnabled: import.meta.env.PUBLIC_ANALYTICS_ENABLED || 'true'
   }}>
     // Analytics configuration from environment variables
     const ANALYTICS_CONFIG = {
       websiteId: websiteId || '',
       apiUrl: apiUrl || '',
-      enabled: (enabled === 'true' || enabled === true) && websiteId && apiUrl
+      enabled: (analyticsEnabled === 'true' || analyticsEnabled === true) && websiteId && apiUrl
     };
 
     console.log('🔧 Analytics: Config loaded', {
