@@ -79,7 +79,7 @@ jobs:
           build-args: |
             PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.PUBLIC_UMAMI_WEBSITE_ID }}
             PUBLIC_UMAMI_API_URL=${{ secrets.PUBLIC_UMAMI_API_URL }}
-            PUBLIC_ANALYTICS_ENABLED=${{ secrets.PUBLIC_ANALYTICS_ENABLED }}
+            PUBLIC_ANALYTICS_ENABLED=true
 
   deploy:
     needs: build-and-push
