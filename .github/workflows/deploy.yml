@@ -99,7 +99,10 @@ jobs:
             # Navigate to project directory
             cd ${{ secrets.DEPLOY_PATH || '/root/PersonalBlog' }}
 
-            # Pull the latest image
+            # Pull the latest code from git
+            git pull origin main
+
+            # Pull the latest Docker image
             docker compose -f docker-compose.prod.yml pull
 
             # Restart the services
