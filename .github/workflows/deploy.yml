@@ -74,8 +74,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          no-cache: true
           build-args: |
             PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.PUBLIC_UMAMI_WEBSITE_ID }}
             PUBLIC_UMAMI_API_URL=${{ secrets.PUBLIC_UMAMI_API_URL }}
