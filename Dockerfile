@@ -9,7 +9,7 @@ ENV NODE_ENV=production
 
 # Accept build arguments for Umami analytics
 ARG PUBLIC_UMAMI_WEBSITE_ID
-ARG PUBLIC_UMAMI_API_URL  
+ARG PUBLIC_UMAMI_API_URL
 ARG PUBLIC_ANALYTICS_ENABLED
 
 # Set them as environment variables for the build process
@@ -33,7 +33,11 @@ RUN echo "=== Build Environment ===" && \
     echo "PUBLIC_ANALYTICS_ENABLED: $PUBLIC_ANALYTICS_ENABLED"
 
 # Build the project with Bun (Astro build will include analytics env vars)
-RUN bun run build
+# Export env vars inline with the build command to ensure Astro sees them
+RUN PUBLIC_UMAMI_WEBSITE_ID=$PUBLIC_UMAMI_WEBSITE_ID \
+    PUBLIC_UMAMI_API_URL=$PUBLIC_UMAMI_API_URL \
+    PUBLIC_ANALYTICS_ENABLED=$PUBLIC_ANALYTICS_ENABLED \
+    bun run build
 
 # Debug: List the build output
 RUN echo "=== Build Output ===" && ls -la dist/
