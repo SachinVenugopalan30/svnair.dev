@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   portfolio:
     image: ghcr.io/sachinvenugopalan30/personalblog:latest
@@ -28,7 +26,7 @@ services:
     restart: unless-stopped
     command:
       - --api.dashboard=true
-      - --api.insecure=true  # Only for development - disable in production
+      - --api.insecure=true # Only for development - disable in production
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
