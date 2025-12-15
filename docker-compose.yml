@@ -12,6 +12,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./public/profile.jpg:/usr/share/nginx/html/profile.jpg:ro
+      - ./public/photography:/usr/share/nginx/html/photography:ro
     ports:
       - "80:80"
     labels:
