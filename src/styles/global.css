@@ -6,11 +6,19 @@
 /* Base styles */
 * {
     box-sizing: border-box;
+    max-width: 100%;
+}
+
+/* Allow specific elements to exceed parent width when needed */
+html,
+body {
+    max-width: none;
 }
 
 html {
     scroll-behavior: auto; /* Disable native smooth scroll for custom implementation */
     scroll-padding-top: 0;
+    overflow-x: hidden;
 }
 
 /* Optimize performance for smooth scrolling */
@@ -29,6 +37,8 @@ body {
     color: #eef0eb;
     line-height: 1.6;
     overflow-x: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Custom scrollbar */
