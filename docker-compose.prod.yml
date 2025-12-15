@@ -3,6 +3,8 @@ services:
     image: ghcr.io/sachinvenugopalan30/svnair.dev:latest
     container_name: sachin-portfolio
     restart: unless-stopped
+    volumes:
+      - ./public/profile.jpg:/usr/share/nginx/html/profile.jpg:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN:-localhost}`)"

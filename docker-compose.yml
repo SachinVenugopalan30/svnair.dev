@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   portfolio:
@@ -10,6 +10,8 @@ services:
         - PUBLIC_ANALYTICS_ENABLED=${PUBLIC_ANALYTICS_ENABLED}
     container_name: sachin-portfolio
     restart: unless-stopped
+    volumes:
+      - ./public/profile.jpg:/usr/share/nginx/html/profile.jpg:ro
     ports:
       - "80:80"
     labels:
