@@ -49,8 +49,8 @@ body {
     background: rgba(204, 41, 54, 0.8);
 }
 
-/* Smooth transitions for all elements */
-* {
+/* Smooth transitions for interactive elements only */
+a, button, input, .glass, .card-hover, .skill-tag {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -60,6 +60,8 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(241, 254, 198, 0.1);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 /* Custom button styles - High specificity to override Tailwind */
