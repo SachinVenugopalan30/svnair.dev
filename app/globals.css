@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ─── */
+@theme {
+  /* Colors */
+  --color-bg: #0A0A0B;
+  --color-surface: #141416;
+  --color-text: #E8E4E0;
+  --color-text-muted: #8A8A8D;
+  --color-accent: #C4503A;
+  --color-accent-hover: #D4604A;
+
+  /* Font Families (mapped from next/font CSS variables) */
+  --font-heading: var(--font-instrument);
+  --font-body: var(--font-outfit);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* ─── Base Styles ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Subtle Animated Background Gradient ─── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+      ellipse 80% 60% at 20% 30%,
+      rgba(196, 80, 58, 0.04) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 80% at 80% 70%,
+      rgba(20, 20, 22, 0.6) 0%,
+      transparent 70%
+    );
+  animation: gradient-drift 25s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes gradient-drift {
+  0% {
+    transform: translate(0%, 0%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(2%, -1%) scale(1.02);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-1%, 2%) scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-hover);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) var(--color-bg);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background-color: rgba(196, 80, 58, 0.3);
+  color: var(--color-text);
+}
