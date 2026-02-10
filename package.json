@@ -1,25 +1,25 @@
 {
-  "name": "astro-portfolio",
+  "name": "svnair-dev",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@astrojs/react": "^4.4.0",
-    "@gsap/react": "^2.1.2",
-    "@tailwindcss/vite": "^4.1.13",
+    "framer-motion": "^12.23.22",
+    "next": "^15.3.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/react": "^19.1.15",
     "@types/react-dom": "^19.1.9",
-    "astro": "^5.14.1",
-    "framer-motion": "^12.23.22",
-    "gsap": "^3.13.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.13",
-    "umami": "^2.10.0"
+    "typescript": "^5.8.3"
   }
 }
