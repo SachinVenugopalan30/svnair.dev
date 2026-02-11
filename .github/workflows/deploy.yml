@@ -31,9 +31,9 @@ jobs:
       - name: Check build output
         run: |
           echo "Build completed successfully!"
-          ls -la dist/
+          ls -la out/
           echo "Build size:"
-          du -sh dist/
+          du -sh out/
 
   build-and-push:
     needs: test
@@ -76,9 +76,9 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           no-cache: true
           build-args: |
-            PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.PUBLIC_UMAMI_WEBSITE_ID }}
-            PUBLIC_UMAMI_API_URL=${{ secrets.PUBLIC_UMAMI_API_URL }}
-            PUBLIC_ANALYTICS_ENABLED=true
+            NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
+            NEXT_PUBLIC_UMAMI_API_URL=${{ secrets.NEXT_PUBLIC_UMAMI_API_URL }}
+            NEXT_PUBLIC_ANALYTICS_ENABLED=true
 
   deploy:
     needs: build-and-push

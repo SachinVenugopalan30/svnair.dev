@@ -37,6 +37,16 @@ export default function RootLayout({
       lang="en"
       className={`${instrumentSerif.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        {process.env.NEXT_PUBLIC_UMAMI_API_URL &&
+          process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+            <script
+              defer
+              src={`${process.env.NEXT_PUBLIC_UMAMI_API_URL}/script.js`}
+              data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            />
+          )}
+      </head>
       <body>{children}</body>
     </html>
   );
