@@ -1,6 +1,6 @@
 export const config = {
   name: "Sachin Venugopalan Nair",
-  email: "venugopalannairsachin@gmail.com",
+  email: "venugopalannairsachin@proton.me",
   socialMedia: {
     github: "https://github.com/SachinVenugopalan30",
     instagram: "https://www.instagram.com/sachin_venugopalan",
