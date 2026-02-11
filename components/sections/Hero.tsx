@@ -8,6 +8,23 @@ const subtitles = ["Developer", "Data Scientist", "Photographer"];
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayedName, setDisplayedName] = useState("");
+  const [typingDone, setTypingDone] = useState(false);
+
+  // Typewriter effect for the name
+  useEffect(() => {
+    const name = config.name;
+    let i = 0;
+    const timer = setInterval(() => {
+      i++;
+      setDisplayedName(name.slice(0, i));
+      if (i >= name.length) {
+        clearInterval(timer);
+        setTypingDone(true);
+      }
+    }, 120);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,19 +63,24 @@ export default function Hero() {
           }}
         />
 
-        {/* Name */}
+        {/* Name — typewriter effect */}
         <motion.h1
-          className="font-heading text-text text-center text-7xl tracking-tight sm:text-8xl md:text-9xl"
+          className="font-heading text-text text-center text-7xl font-bold tracking-tight sm:text-8xl md:text-9xl"
           variants={{
-            hidden: { opacity: 0, y: 20 },
+            hidden: { opacity: 0 },
             visible: {
               opacity: 1,
-              y: 0,
-              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+              transition: { duration: 0.3 },
             },
           }}
         >
-          {config.name}
+          {displayedName}
+          <span
+            className={`inline-block w-[3px] bg-accent align-baseline ml-1 ${
+              typingDone ? "animate-blink" : ""
+            }`}
+            style={{ height: "0.75em" }}
+          />
         </motion.h1>
 
         {/* Rotating subtitle */}

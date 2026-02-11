@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Outfit, JetBrains_Mono } from "next/font/google";
+import { IBM_Plex_Serif, Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
-  weight: "400",
+const ibmPlexSerif = IBM_Plex_Serif({
+  weight: "700",
   subsets: ["latin"],
-  variable: "--font-instrument",
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
+      className={`${ibmPlexSerif.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         {process.env.NEXT_PUBLIC_UMAMI_API_URL &&
