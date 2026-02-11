@@ -65,7 +65,7 @@ export default function Hero() {
 
         {/* Name — typewriter effect */}
         <motion.h1
-          className="font-heading text-text text-center text-7xl font-bold tracking-tight sm:text-8xl md:text-9xl"
+          className="font-heading text-text text-center text-4xl font-bold tracking-tight sm:text-5xl md:text-7xl"
           variants={{
             hidden: { opacity: 0 },
             visible: {

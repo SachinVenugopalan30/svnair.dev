@@ -1,5 +1,5 @@
 export const config = {
-  name: "Sachin",
+  name: "Sachin Venugopalan Nair",
   email: "venugopalannairsachin@gmail.com",
   socialMedia: {
     github: "https://github.com/SachinVenugopalan30",
