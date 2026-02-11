@@ -28,7 +28,7 @@ export default function Hero() {
         clearInterval(timer);
         setTypingDone(true);
       }
-    }, 180);
+    }, 100);
     return () => clearInterval(timer);
   }, []);
 
