@@ -32,10 +32,16 @@
   },
   {
     "id": 3,
-    "title": "Transcriptr",
-    "description": "Full-Stack Web Application for downloading YouTube Transcripts and formatting the data for ease of use in RAG Pipelines/MCP Servers",
-    "technologies": ["NextJS", "Python", "NLTK", "Redis", "PostgreSQL"],
-    "githubUrl": "https://github.com/SachinVenugopalan30/transcriptr",
+    "title": "Drift Guard",
+    "description": "Full-Stack Web Application for monitoring and alerting on data drift in machine learning models, built with NextJS and Python.",
+    "technologies": [
+      "NextJS",
+      "Python",
+      "MLflow",
+      "SQLite",
+      "Data Version Control"
+    ],
+    "githubUrl": "https://github.com/SachinVenugopalan30/Drift-Guard",
     "liveUrl": ""
   }
 ]

@@ -3,5 +3,11 @@ node_modules
 dist
 assets
 public/profile.jpg
+public/photography/
 CONTEXT.md
 .env
+
+# Next.js
+.next/
+out/
+next-env.d.ts

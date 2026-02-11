@@ -1,6 +1,20 @@
 [
   {
     "id": 1,
+    "company": "The Software Developers Association at ASU",
+    "link": "https://thesoda.io",
+    "position": "Technical Officer",
+    "startDate": "January 2026",
+    "endDate": "Present",
+    "highlights": [
+      "Guided 2 mentees through project cycles, improving code quality and deployment readiness",
+      "Developed and maintained React and Python website, modernizing legacy code and improving stability by 12%",
+      "Organized and led technical workshops on AWS, ML/AI, and system design for 50+ attendees each"
+    ],
+    "technologies": ["Python", "React", "Jupyter Notebook"]
+  },
+  {
+    "id": 2,
     "company": "Firstsource",
     "link": "https://www.firstsource.com",
     "position": "Senior Data Scientist",
@@ -25,7 +39,7 @@
     ]
   },
   {
-    "id": 2,
+    "id": 3,
     "company": "Firstsource",
     "link": "https://www.firstsource.com",
     "position": "Data Scientist",
