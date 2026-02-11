@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Logo from "@/components/Logo";
 
 const navLinks = [
   { href: "/projects", label: "Projects" },
@@ -41,11 +42,12 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* Site name */}
+        {/* Logo + Site name */}
         <Link
           href="/"
-          className="font-heading text-lg tracking-tight text-text transition-colors hover:text-accent"
+          className="flex items-center gap-2.5 font-heading text-lg font-bold tracking-tight text-text transition-colors hover:text-accent"
         >
+          <Logo />
           Sachin
         </Link>
 

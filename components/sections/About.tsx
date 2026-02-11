@@ -5,11 +5,14 @@ import { motion } from "framer-motion";
 
 const skills = [
   "Python",
-  "TypeScript",
+  "JavaScript/TypeScript",
+  "SQL",
+  "NoSQL",
   "React",
-  "Next.js",
   "Machine Learning",
-  "Data Science",
+  "Artificial Intelligence",
+  "Deep Learning",
+  "Large Language Models",
   "Cloud (GCP/Azure)",
   "Docker",
   "Photography",
@@ -66,12 +69,13 @@ export default function About() {
           {/* Bio */}
           <motion.div className="flex flex-col gap-6" variants={fadeInUp}>
             <p className="font-body text-text-muted leading-relaxed text-base sm:text-lg">
-              Sachin is a Senior Data Scientist and full-stack developer based
-              in the US, with a passion for turning complex data into actionable
-              insights and building polished, end-to-end digital products. When
-              he's not training models or writing code, you'll find him behind a
-              camera capturing light and landscapes, or experimenting with new
-              recipes in the kitchen.
+              Hi there! At the time of writing this I have ~5 years of
+              experience as a Data Scientist, with some experience in software
+              development. Currently based in the US, with a passion for turning
+              complex data into actionable insights and building polished,
+              end-to-end digital products. When I'm not training models or
+              writing code, you'll find me trying to take cool photos, lol.
+              Thanks for stopping by!
             </p>
           </motion.div>
         </motion.div>

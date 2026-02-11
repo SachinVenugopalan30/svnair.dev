@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { config } from "@/lib/config";
 
-const subtitles = ["Developer", "Data Scientist", "Photographer"];
+const subtitles = [
+  "Developer",
+  "Data Scientist",
+  "Photographer",
+  "Gamer",
+  "Leetcode Hater",
+];
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
