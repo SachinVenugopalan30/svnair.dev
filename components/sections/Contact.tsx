@@ -87,7 +87,7 @@ export default function Contact() {
           out.
         </motion.p>
 
-        {/* Email */}
+        {/* Email button */}
         <motion.div
           className="mb-12"
           initial="hidden"
@@ -97,9 +97,21 @@ export default function Contact() {
         >
           <a
             href={`mailto:${config.email}`}
-            className="font-mono text-accent inline-block border-b border-accent/30 pb-0.5 text-sm tracking-wide transition-colors hover:border-accent hover:text-accent-hover sm:text-base"
+            className="font-mono inline-flex items-center gap-2 rounded-md border border-accent/40 bg-accent/10 px-6 py-3 text-sm tracking-wide text-accent transition-all duration-300 hover:border-accent hover:bg-accent/20 hover:text-accent-hover"
           >
-            {config.email}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M22 4L12 13L2 4" />
+            </svg>
+            Say Hello
           </a>
         </motion.div>
 
