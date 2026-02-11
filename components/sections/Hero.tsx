@@ -14,11 +14,15 @@ const subtitles = [
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [displayedName, setDisplayedName] = useState("");
-  const [typingDone, setTypingDone] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [displayedName, setDisplayedName] = useState(config.name);
+  const [typingDone, setTypingDone] = useState(true);
 
-  // Typewriter effect for the name
+  // After hydration, reset and start typewriter
   useEffect(() => {
+    setMounted(true);
+    setDisplayedName("");
+    setTypingDone(false);
     const name = config.name;
     let i = 0;
     const timer = setInterval(() => {
@@ -81,11 +85,13 @@ export default function Hero() {
           }}
         >
           {displayedName}
-          <span
-            className={`text-accent ml-1 ${typingDone ? "animate-blink" : ""}`}
-          >
-            _
-          </span>
+          {mounted && (
+            <span
+              className={`text-accent ml-1 ${typingDone ? "animate-blink" : ""}`}
+            >
+              _
+            </span>
+          )}
         </motion.h1>
 
         {/* Rotating subtitle */}
