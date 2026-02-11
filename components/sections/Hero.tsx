@@ -22,7 +22,7 @@ export default function Hero() {
         clearInterval(timer);
         setTypingDone(true);
       }
-    }, 120);
+    }, 180);
     return () => clearInterval(timer);
   }, []);
 
@@ -76,11 +76,10 @@ export default function Hero() {
         >
           {displayedName}
           <span
-            className={`inline-block w-[3px] bg-accent align-baseline ml-1 ${
-              typingDone ? "animate-blink" : ""
-            }`}
-            style={{ height: "0.75em" }}
-          />
+            className={`text-accent ml-1 ${typingDone ? "animate-blink" : ""}`}
+          >
+            _
+          </span>
         </motion.h1>
 
         {/* Rotating subtitle */}
