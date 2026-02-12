@@ -1,140 +1,89 @@
 # Personal Portfolio
 
-A modern, responsive personal portfolio built with Astro, React, and TypeScript. Features smooth animations, glass morphism design, and optimized performance.
-
-## Features
-
-- Built with Astro for optimal performance
-- Modern glass morphism design with custom color palette
-- Mobile-first responsive design
-- Smooth animations with CSS transitions
-- TypeScript for better development experience
-- SEO optimized with proper meta tags
+A statically exported personal portfolio site built with Next.js 15, styled with Tailwind CSS v4, and animated with Framer Motion. Served via Nginx in Docker, with optional Traefik for HTTPS.
 
 ## Tech Stack
 
-- **Framework**: Astro + React
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Package Manager**: Bun
-- **Build Tool**: Vite (via Astro)
-
-## Quick Start
-
-### Prerequisites
-
-- Bun (recommended) or Node.js 18+
-- Git
-
-### Installation
-
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd PersonalBlog
-
-# Install dependencies
-bun install
-
-# Start development server
-bun run dev
-
-# Build for production
-bun run build
-
-# Preview production build
-bun run preview
-```
+- **Framework:** Next.js 15 (static export via `output: 'export'`)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Runtime / Package Manager:** Bun
+- **Serving:** Nginx (Alpine)
+- **Deployment:** Docker + Traefik (Let's Encrypt TLS)
+- **Analytics:** Umami (self-hosted, optional)
 
 ## Project Structure
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-src/
-├── components/          # React components
-│   ├── Navigation.tsx   # Navigation component
-│   ├── PageTransition.tsx # Page transition animations
-│   └── ProjectCard.tsx  # Project card component
-├── layouts/             # Astro layouts
-│   └── Layout.astro     # Base layout with meta tags
-├── pages/               # Astro pages (file-based routing)
-│   ├── index.astro      # Home page (About & Projects)
-│   ├── photography.astro # Photography showcase
-│   └── resume-contact.astro # Resume & Contact
-├── styles/              # Global styles
-│   └── global.css       # Global CSS with custom animations
-└── utils/               # Utility functions
-    └── smoothScroll.ts  # Smooth scrolling functionality
+```
+app/                  # Next.js app router pages and layouts
+  layout.tsx          # Root layout, fonts, analytics script
+  page.tsx            # Home page (hero, about, experience, projects)
+  projects/page.tsx   # Projects listing
+  photography/page.tsx # Photography gallery
+components/           # Client components (Navbar, SectionNav, PhotoGallery, etc.)
+lib/                  # Utilities (config, photo loader, seeded shuffle)
+experience.json       # Work experience data
+projects.json         # Project data
+public/photography/   # Photo directory (volume-mounted in production)
 ```
 
-## Pages
+## Local Development
 
-### Home (About & Projects)
-- Hero section with animated profile area
-- About section with skills showcase
-- Featured projects with interactive cards
-- Smooth scrolling navigation
+Requires [Bun](https://bun.sh) installed.
 
-### Photography
-- Coming soon page with Instagram API integration setup
-- Animated camera icons and floating elements
-- Links to social media platforms
+```bash
+bun install
+bun run dev
+```
 
-### Resume & Contact
-- Downloadable resume section
-- Contact form with validation
-- Social media links
-- Professional information display
+The dev server starts at `http://localhost:3000` with Turbopack enabled.
 
-## Commands
+## Building
 
-All commands are run from the root of the project, from a terminal:
+```bash
+bun run build
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`                 | Starts local dev server at `localhost:4321`     |
-| `bun build`               | Build your production site to `./dist/`         |
-| `bun preview`             | Preview your build locally, before deploying    |
-| `bun astro ...`           | Run CLI commands like `astro add`, `astro check`|
-| `bun astro -- --help`     | Get help using the Astro CLI                    |
-
-## Customization
-
-### Colors
-The design uses a carefully curated color scheme defined in `tailwind.config.js`:
-
-- **Raisin Black** (`#141423`) - Main background color
-- **Ivory** (`#F1FEC6`) - Primary text color
-- **Scarlet** (`#FF3A20`) - Accent color for buttons and highlights
-- **Air Superiority Blue** (`#74A4BC`) - Secondary accent
-- **Ash Gray** (`#B6D6CC`) - Muted text and subtle accents
-
-### Content
-Update the content in the respective page files:
-
-- `src/pages/index.astro` - Home page content and projects
-- `src/pages/photography.astro` - Photography page
-- `src/pages/resume-contact.astro` - Resume and contact information
+This produces a fully static site in the `out/` directory.
 
 ## Deployment
 
-### Vercel (Recommended)
-```bash
-# Install Vercel CLI
-npm i -g vercel
+### Docker (recommended)
 
-# Deploy
-vercel
+The included `Dockerfile` runs a two-stage build: Bun installs dependencies and builds the site, then the static output is copied into an Nginx Alpine image.
+
+```bash
+docker build -t portfolio .
+docker run -p 80:80 portfolio
 ```
 
-### Netlify
-```bash
-# Build
-bun run build
+### Docker Compose with Traefik
 
-# Deploy dist/ folder to Netlify
+The `docker-compose.yml` sets up the portfolio behind Traefik with automatic Let's Encrypt certificates. Before running:
+
+1. Create the external Traefik network: `docker network create traefik`
+2. Update the domain and email in `docker-compose.yml`
+3. Optionally set analytics env vars in a `.env` file
+
+```env
+NEXT_PUBLIC_UMAMI_WEBSITE_ID=your-website-id
+NEXT_PUBLIC_UMAMI_API_URL=https://your-umami-instance.com
+NEXT_PUBLIC_ANALYTICS_ENABLED=true
 ```
 
-Built with Astro, React, and TypeScript.
+Then start everything:
+
+```bash
+docker compose up -d
+```
+
+Photography images are volume-mounted from `public/photography/` into the Nginx container, so photos can be updated without rebuilding.
+
+### CI/CD
+
+A GitHub Actions workflow (`.github/workflows/deploy.yml`) handles automated builds and deployment. Add the required secrets to your repository settings.
+
+## License
+
+MIT
