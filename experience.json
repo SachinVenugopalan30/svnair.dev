@@ -7,9 +7,9 @@
     "startDate": "January 2026",
     "endDate": "Present",
     "highlights": [
-      "Guided 2 mentees through project cycles, improving code quality and deployment readiness",
-      "Developed and maintained React and Python website, modernizing legacy code and improving stability by 12%",
-      "Organized and led technical workshops on AWS, ML/AI, and system design for 50+ attendees each"
+      "Mentored students through project cycles, improving code quality and deployment readiness",
+      "Organized and led technical workshops on AWS, ML/AI, and system design for 100+ attendees each",
+      "Co-directed and developed problems for competitive coding challenges"
     ],
     "technologies": ["Python", "React", "Jupyter Notebook"]
   },
@@ -21,18 +21,17 @@
     "startDate": "October 2023",
     "endDate": "April 2025",
     "highlights": [
-      "Developed automated ETL workflows merging SQL data, cutting pipeline creation time by 50%",
-      "Built interpretable customer retention model securing a $1M enterprise contract",
-      "Created multivariate regression models reducing healthcare operational costs by 24%",
-      "Engineered OCR-based document classifier boosting marketing engagement by 12%",
-      "Debugged Python systems and automated workflows, saving 8–9 hours weekly",
-      "Named Best Performer (Aug 2024) for delivering high-impact ML projects"
+      "Contributed to a $1M+ contract renewal by designing a churn prediction system over 500K+ records with Python, Pandas & scikit-learn for the retention team to prioritize at-risk accounts with 89% accuracy",
+      "Cut healthcare staffing costs by 24% across 10 hospitals by leading a workforce optimization system with XGBoost & REST APIs, serving daily predictions with MLflow monitoring",
+      "Cut deployment-to-production time by 33% by standardizing Docker, PyTest, and CI/CD workflows across 3 projects, shipping 4 models in one quarter and earning ’Best Performer’",
+      "Mentored 4 junior data scientists and implemented standardized code review protocols, developing reusable model templates adopted across 3 projects to ensure scalability"
     ],
     "technologies": [
       "Python",
-      "Microsoft SQL Server Management",
+      "SQL",
       "Azure OpenAI",
-      "Microsoft Excel",
+      "PyTest",
+      "MLflow",
       "Jupyter Notebook",
       "XGBoost",
       "Regression"
@@ -46,9 +45,10 @@
     "startDate": "August 2020",
     "endDate": "October 2023",
     "highlights": [
-      "Built time-series forecasting models in Python predicting workforce demand with 97% accuracy",
-      "Deployed forecasts into operations, reducing overtime 17% and improving scheduling 15%",
-      "Led cross-functional data and product initiatives, earning Rising Star Award (May 2023)"
+      "Saved $100K+ annually in client overtime costs by building demand forecast models using Random Forest, SARIMA, and Prophet with less than 5% error rate, serving 250+ agents across 3 sites",
+      "Lowered post-deployment failures by 35% by building automated model validation pipelines with PyTest and MLflow earning the organization’s Rising Star Award",
+      "Cut manual document review time by 18% by building an OCR classifier using TensorFlow with pytesseract, achieving 85% accuracy across 15 document types",
+      "Cut resume screening time by 40% and doubled matching accuracy with a Natural Language Processing pipeline (spaCy, NLTK)"
     ],
     "technologies": [
       "Python",

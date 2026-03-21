@@ -43,5 +43,28 @@
     ],
     "githubUrl": "https://github.com/SachinVenugopalan30/Drift-Guard",
     "liveUrl": ""
+  },
+  {
+    "id": 4,
+    "title": "Sous Clip",
+    "description": "Self-hosted, privacy focused recipe-extraction app from short form cooking content",
+    "technologies": ["React", "Python", "Whisper", "Valkey", ""],
+    "githubUrl": "https://github.com/SachinVenugopalan30/sous-clip",
+    "liveUrl": "https://sous-clip-web.pages.dev/"
+  },
+  {
+    "id": 5,
+    "title": "Paper Trail",
+    "description": "A hybrid PDF/OCR extraction pipeline that processes open-source bug reports, with a Neo4j knowledge graph and a hybrid retrieval RAG pipeline.",
+    "technologies": [
+      "Python",
+      "LangChain",
+      "Streamlit",
+      "Neo4j",
+      "ChromaDB",
+      "GLM-OCR"
+    ],
+    "githubUrl": "https://github.com/SachinVenugopalan30/Paper-Trail",
+    "liveUrl": ""
   }
 ]
