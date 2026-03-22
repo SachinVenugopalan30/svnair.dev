@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { config } from "@/lib/config";
+import { siteConfig as config } from "@/lib/config";
 
 const socials = [
   {

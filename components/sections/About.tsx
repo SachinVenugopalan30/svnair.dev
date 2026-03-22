@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 const skills = [
@@ -77,6 +78,54 @@ export default function About() {
               writing code, you'll find me trying to take cool photos, lol.
               Thanks for stopping by!
             </p>
+
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/projects"
+                className="group font-mono inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-4 py-2 text-sm tracking-wide text-accent transition-all duration-200 hover:border-accent hover:bg-accent/20"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                >
+                  <path d="M3 3h7v7H3z" />
+                  <path d="M14 3h7v7h-7z" />
+                  <path d="M3 14h7v7H3z" />
+                  <path d="M14 14h7v7h-7z" />
+                </svg>
+                Projects
+              </Link>
+              <Link
+                href="/photography"
+                className="group font-mono inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm tracking-wide text-text-muted transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-text"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="transition-transform duration-200 group-hover:scale-110"
+                >
+                  <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                  <circle cx="12" cy="13" r="3" />
+                </svg>
+                Photography
+              </Link>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -112,6 +161,38 @@ export default function About() {
               {skill}
             </motion.span>
           ))}
+        </motion.div>
+
+        {/* Scroll hint — experience below */}
+        <motion.div
+          className="mt-20 flex flex-col items-center gap-2"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <span className="font-mono text-xs tracking-widest text-text-muted/50 uppercase">
+            Work Experience
+          </span>
+          <motion.div
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-accent/40"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </motion.div>
         </motion.div>
       </div>
     </section>

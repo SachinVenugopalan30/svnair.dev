@@ -3,14 +3,8 @@
     "id": 1,
     "title": "Personal Website (this site!)",
     "description": "Modern, personal portfolio built with Astro, React, and Tailwind CSS. Features smooth animations for the cools.",
-    "technologies": [
-      "Astro",
-      "React",
-      "Tailwind CSS",
-      "TypeScript",
-      "Framer Motion"
-    ],
-    "githubUrl": "https://github.com/SachinVenugopalan30/portfolio",
+    "technologies": ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
+    "githubUrl": "https://github.com/SachinVenugopalan30/svnair.dev",
     "liveUrl": "https://svnair.dev"
   },
   {
@@ -19,7 +13,7 @@
     "description": "Docker containerized web application to tailor job resumes based on job descriptions using multiple AI Providers.",
     "technologies": [
       "Python",
-      "React",
+      "React.js",
       "FastAPI",
       "Gemini",
       "OpenAI",

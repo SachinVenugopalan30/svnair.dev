@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { config } from "@/lib/config";
+import { siteConfig as config } from "@/lib/config";
 
 const subtitles = [
   "Developer",

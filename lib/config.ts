@@ -1,4 +1,4 @@
-export const config = {
+export const siteConfig = {
   name: "Sachin Venugopalan Nair",
   email: "venugopalannairsachin@proton.me",
   socialMedia: {
