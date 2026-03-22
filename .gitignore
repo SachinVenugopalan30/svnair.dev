@@ -4,6 +4,7 @@ dist
 assets
 public/profile.jpg
 public/photography/
+public/resume.pdf
 CONTEXT.md
 .env
 
