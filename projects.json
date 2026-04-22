@@ -9,6 +9,22 @@
   },
   {
     "id": 2,
+    "title": "Oasis",
+    "description": "iOS application for aiding disaster response/social workers quickly fill victims' information via voice agents",
+    "technologies": ["React-Native", "Gemma4", "Cactus (YC S25)"],
+    "githubUrl": "https://github.com/SachinVenugopalan30/voice-agents-hack",
+    "liveUrl": ""
+  },
+  {
+    "id": 3,
+    "title": "Shell AI",
+    "description": "Simple CLI tool to use local Large Language Models to convert natural language to Bash/other Terminal commands.",
+    "technologies": ["Go", "Ollama"],
+    "githubUrl": "https://github.com/SachinVenugopalan30/shell-ai",
+    "liveUrl": ""
+  },
+  {
+    "id": 4,
     "title": "JobGlove",
     "description": "Docker containerized web application to tailor job resumes based on job descriptions using multiple AI Providers.",
     "technologies": [
@@ -25,7 +41,7 @@
     "liveUrl": ""
   },
   {
-    "id": 3,
+    "id": 5,
     "title": "Drift Guard",
     "description": "Full-Stack Web Application for monitoring and alerting on data drift in machine learning models, built with NextJS and Python.",
     "technologies": [
@@ -39,7 +55,7 @@
     "liveUrl": ""
   },
   {
-    "id": 4,
+    "id": 6,
     "title": "Sous Clip",
     "description": "Self-hosted, privacy focused recipe-extraction app from short form cooking content",
     "technologies": ["React", "Python", "Whisper", "Valkey", ""],
@@ -47,7 +63,7 @@
     "liveUrl": "https://sous-clip-web.pages.dev/"
   },
   {
-    "id": 5,
+    "id": 7,
     "title": "Paper Trail",
     "description": "A hybrid PDF/OCR extraction pipeline that processes open-source bug reports, with a Neo4j knowledge graph and a hybrid retrieval RAG pipeline.",
     "technologies": [

@@ -1,6 +1,16 @@
 [
   {
     "id": 1,
+    "company": "Analysis Group",
+    "link": "https://analysisgroup.com",
+    "position": "Incoming Data Science Intern",
+    "startDate": "June 2026",
+    "endDate": "August 2026",
+    "highlights": ["Coming Soon™️"],
+    "technologies": ["Coming Soon™️"]
+  },
+  {
+    "id": 2,
     "company": "The Software Developers Association at ASU",
     "link": "https://thesoda.io",
     "position": "Technical Officer",
@@ -14,7 +24,7 @@
     "technologies": ["Python", "React", "Jupyter Notebook"]
   },
   {
-    "id": 2,
+    "id": 3,
     "company": "Firstsource",
     "link": "https://www.firstsource.com",
     "position": "Senior Data Scientist",
@@ -38,7 +48,7 @@
     ]
   },
   {
-    "id": 3,
+    "id": 4,
     "company": "Firstsource",
     "link": "https://www.firstsource.com",
     "position": "Data Scientist",
