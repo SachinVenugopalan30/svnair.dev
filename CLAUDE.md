@@ -39,6 +39,13 @@ No test suite exists in this project.
 
 CI/CD via `.github/workflows/deploy.yml`: push to `main` → build test → Docker image pushed to GHCR → SSH deploy to server running `docker-compose.prod.yml`. The Dockerfile is a two-stage build: Bun builder → Nginx serving `out/`.
 
+## Resume
+
+The resume is served as a static PDF at `/resume.pdf`, embedded by `/resume`.
+
+- **Production:** The PDF is volume-mounted into the Nginx container from `./data/resume.pdf` (relative to `docker-compose.prod.yml` on the server). Upload a new resume directly to the server via rsync/scp — no rebuild or container restart is required.
+- **Local development:** A placeholder `public/resume.pdf` is used by `bun dev`. It is gitignored and not deployed.
+
 ## Frontend Aesthetics
 
 Avoid generic AI-generated aesthetics:

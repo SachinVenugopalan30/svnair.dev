@@ -6,7 +6,7 @@ services:
     volumes:
       - ./public/profile.jpg:/usr/share/nginx/html/profile.jpg:ro
       - ./public/photography:/usr/share/nginx/html/photography:ro
-      - ./public/resume.pdf:/usr/share/nginx/html/resume.pdf:ro
+      - ./data/resume.pdf:/usr/share/nginx/html/resume.pdf:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN:-localhost}`)"
