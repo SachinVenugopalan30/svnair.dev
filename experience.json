@@ -3,17 +3,28 @@
     "id": 1,
     "company": "Analysis Group",
     "link": "https://analysisgroup.com",
-    "position": "Incoming Data Science Intern",
-    "startDate": "June 2026",
-    "endDate": "August 2026",
+    "position": "Data Scientist",
+    "startDate": "TBD",
+    "endDate": "TBD",
     "highlights": ["Coming Soon™️"],
     "technologies": ["Coming Soon™️"]
   },
   {
     "id": 2,
+    "company": "Analysis Group",
+    "link": "https://analysisgroup.com",
+    "position": "Data Science Intern",
+    "startDate": "June 2026",
+    "endDate": "August 2026",
+    "highlights": ["Engineered a Python & Pandas pipeline to re-attribute millions of network traffic records by filtering shared network, cutting contested access points by 50% in a $10 million dispute",
+                    "Reduced data comparison time by 25x while auditing 43 Billion transactional records through development of a staged Python/Polars framework with fast equality checks and duplicate-aware validation"],
+    "technologies": ["Python", "LangChain", "Polars", "Pandas"]
+  },
+  {
+    "id": 3,
     "company": "The Software Developers Association at ASU",
     "link": "https://thesoda.io",
-    "position": "Technical Officer",
+    "position": "Senior Technical Officer",
     "startDate": "January 2026",
     "endDate": "Present",
     "highlights": [
@@ -24,7 +35,7 @@
     "technologies": ["Python", "React", "Jupyter Notebook"]
   },
   {
-    "id": 3,
+    "id": 4,
     "company": "Firstsource",
     "link": "https://www.firstsource.com",
     "position": "Senior Data Scientist",
@@ -48,7 +59,7 @@
     ]
   },
   {
-    "id": 4,
+    "id": 5,
     "company": "Firstsource",
     "link": "https://www.firstsource.com",
     "position": "Data Scientist",
@@ -62,6 +73,8 @@
     ],
     "technologies": [
       "Python",
+      "Pandas",
+      "Polars",
       "NLTK",
       "Google Cloud Platform",
       "Jenkins",
