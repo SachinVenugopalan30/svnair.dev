@@ -1,0 +1,30 @@
+[Unit]
+Description=svnair.dev portfolio
+After=network-online.target
+
+[Container]
+Image=ghcr.io/sachinvenugopalan30/svnair.dev:latest
+ContainerName=sachin-portfolio
+Network=traefik.network
+# Pulls a newer image on every start, so `systemctl restart` is the whole deploy.
+Pull=newer
+
+Volume=/root/PersonalBlog/public/profile.jpg:/usr/share/nginx/html/profile.jpg:ro
+Volume=/root/PersonalBlog/public/photography:/usr/share/nginx/html/photography:ro
+Volume=/root/PersonalBlog/data/resume.pdf:/usr/share/nginx/html/resume.pdf:ro
+
+Label=traefik.enable=true
+Label=traefik.http.routers.portfolio.rule=Host(`svnair.dev`)
+Label=traefik.http.routers.portfolio.entrypoints=websecure
+Label=traefik.http.routers.portfolio.tls.certresolver=letsencrypt
+Label=traefik.http.services.portfolio.loadbalancer.server.port=80
+Label=traefik.http.routers.portfolio-http.rule=Host(`svnair.dev`)
+Label=traefik.http.routers.portfolio-http.entrypoints=web
+Label=traefik.http.routers.portfolio-http.middlewares=redirect-to-https
+Label=traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

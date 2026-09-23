@@ -37,7 +37,17 @@ No test suite exists in this project.
 
 ## Deployment
 
-CI/CD via `.github/workflows/deploy.yml`: push to `main` → build test → Docker image pushed to GHCR → SSH deploy to server running `docker-compose.prod.yml`. The Dockerfile is a two-stage build: Bun builder → Nginx serving `out/`.
+CI/CD via `.github/workflows/deploy.yml`: push to `main` → build test → Docker image pushed to GHCR → SSH deploy (key auth) to the server. The Dockerfile is a two-stage build: Bun builder → Nginx serving `out/`.
+
+**Runtime:** the server runs **rootful Podman with Quadlet**, not Docker Compose. Unit files live in `quadlet/` and are copied to `/etc/containers/systemd/` by the deploy job; systemd generates the services from them. Deploy is `systemctl restart portfolio.service` — the unit sets `Pull=newer`, so the restart pulls the new image itself. Image names must be fully qualified (`docker.io/library/traefik:latest`); Podman has no implicit Docker Hub fallback.
+
+Quadlet does no variable interpolation, so the domain and ACME email are literals in `quadlet/*.container` rather than `${DOMAIN}`-style refs. Changing either means editing the unit file.
+
+Traefik's Docker provider reads `/run/podman/podman.sock` (requires `systemctl enable --now podman.socket`) mounted at the Docker socket path.
+
+**TLS:** the origin is behind Cloudflare's proxy, so Traefik uses the ACME **DNS-01** challenge — HTTP-01 and TLS-ALPN-01 cannot reach a proxied origin. Requires `CF_DNS_API_TOKEN` (Cloudflare token scoped to Zone:DNS:Edit) in `/root/PersonalBlog/.env` on the server, read via the unit's `EnvironmentFile=`. `.env` is gitignored and exists only on the server.
+
+The Traefik dashboard is bound to loopback (`127.0.0.1:8080`) since `--api.insecure=true` has no auth. Reach it with `ssh -L 8080:127.0.0.1:8080 root@<server>`.
 
 ## Resume
 

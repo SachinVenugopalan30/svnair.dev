@@ -93,7 +93,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT || 22 }}
           script: |
             # Navigate to project directory
@@ -102,13 +102,15 @@ jobs:
             # Pull the latest code from git
             git pull origin main
 
-            # Pull the latest Docker image
-            docker compose -f docker-compose.prod.yml pull
+            # Sync Quadlet units (no-op unless they changed in this commit)
+            install -m 644 quadlet/*.container quadlet/*.network /etc/containers/systemd/
+            systemctl daemon-reload
 
-            # Restart the services
-            docker compose -f docker-compose.prod.yml up -d --force-recreate portfolio
+            # Restart pulls the new image: the unit sets Pull=newer
+            systemctl restart portfolio.service
+            systemctl is-active --quiet portfolio.service
 
             # Clean up old images
-            docker image prune -f
+            podman image prune -f
 
             echo "Deployment completed successfully!"

@@ -1,0 +1,6 @@
+[Unit]
+Description=Shared network for Traefik and its backends
+
+[Network]
+# Without NetworkName, Quadlet would name this "systemd-traefik".
+NetworkName=traefik

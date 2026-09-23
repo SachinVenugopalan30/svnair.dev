@@ -1,0 +1,49 @@
+[Unit]
+Description=Traefik reverse proxy
+After=network-online.target podman.socket
+Requires=podman.socket
+
+[Container]
+Image=docker.io/library/traefik:latest
+ContainerName=traefik
+Network=traefik.network
+Pull=newer
+
+PublishPort=80:80
+PublishPort=443:443
+# Dashboard is bound to loopback: --api.insecure=true has no auth.
+# Reach it with: ssh -L 8080:127.0.0.1:8080 root@<server>
+PublishPort=127.0.0.1:8080:8080
+
+# Podman's Docker-compatible API. Traefik's provider still expects the
+# Docker socket path inside the container.
+Volume=/run/podman/podman.sock:/var/run/docker.sock:ro
+Volume=/root/PersonalBlog/letsencrypt:/letsencrypt
+Volume=/root/PersonalBlog/logs:/var/log/traefik
+
+# Supplies CF_DNS_API_TOKEN for the DNS-01 challenge.
+EnvironmentFile=/root/PersonalBlog/.env
+
+Exec=--api.dashboard=true \
+     --api.insecure=true \
+     --providers.docker=true \
+     --providers.docker.exposedbydefault=false \
+     --entrypoints.web.address=:80 \
+     --entrypoints.websecure.address=:443 \
+     --entrypoints.web.http.redirections.entrypoint.to=websecure \
+     --entrypoints.web.http.redirections.entrypoint.scheme=https \
+     --entrypoints.web.http.redirections.entrypoint.permanent=true \
+     --certificatesresolvers.letsencrypt.acme.dnschallenge=true \
+     --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare \
+     --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53 \
+     --certificatesresolvers.letsencrypt.acme.email=sachinvnair30@gmail.com \
+     --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json \
+     --accesslog=true \
+     --accesslog.filepath=/var/log/traefik/access.log \
+     --log.level=INFO
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
