@@ -1,38 +1,70 @@
+import fs from "fs";
+import path from "path";
 import Navbar from "@/components/Navbar";
 import PhotoGallery from "@/components/PhotoGallery";
-import { getSelectedPhotos } from "@/lib/photos";
+import { ArrowUpRight, InstagramLogo } from "@phosphor-icons/react/dist/ssr";
+import { isPhoto } from "@/lib/photos";
+import { siteConfig as config } from "@/lib/config";
+
+// "https://www.instagram.com/sachin_venugopalan" -> "@sachin_venugopalan"
+const instagramHandle = `@${new URL(config.socialMedia.instagram).pathname.replace(/\//g, "")}`;
 
 export const metadata = {
-  title: "Photography",
-  description: "A rotating selection of photographs, refreshed daily at midnight UTC.",
+  title: "Photography | Sachin Nair",
+  description:
+    "A rotating selection of five photographs by Sachin Nair, refreshed daily at midnight UTC.",
 };
 
-export default function PhotographyPage() {
-  const photos = getSelectedPhotos(5);
+// Fallback list for `bun dev`, where nginx isn't around to list the folder.
+// In production the folder is mounted at runtime, so this is empty and the
+// gallery fetches nginx's JSON listing instead.
+function buildTimePhotos(): string[] {
+  const dir = path.join(process.cwd(), "public", "photography");
+  return fs.existsSync(dir) ? fs.readdirSync(dir).filter(isPhoto) : [];
+}
 
+export default function PhotographyPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-6xl px-6 pt-32 pb-20">
-        <header className="mb-12 text-center">
-          <h1 className="font-heading text-4xl tracking-tight text-text sm:text-5xl">
+      <main className="mx-auto max-w-6xl px-4 pt-32 pb-24 sm:px-6">
+        <header className="max-w-[60ch]">
+          <h1 className="text-4xl font-extrabold tracking-[-0.03em] text-text sm:text-5xl">
             Photography
           </h1>
-          <p className="mt-3 font-mono text-xs tracking-wider text-text-muted">
-            Photos rotate daily at midnight UTC
+          <p className="mt-4 text-sm leading-relaxed text-text-muted">
+            Five frames from my archive, picked fresh every day at 00:00 UTC.
+            Select one to see it full size, then use the arrow keys to move
+            between them.
           </p>
+          <a
+            href={config.socialMedia.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-5 inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted transition-colors hover:text-text"
+          >
+            <InstagramLogo size={18} aria-hidden />
+            <span className="whitespace-nowrap">More on Instagram</span>
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+              <span className="font-bold text-accent-ink">
+                {instagramHandle}
+              </span>
+              <ArrowUpRight
+                size={12}
+                weight="bold"
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </span>
+          </a>
         </header>
 
-        {photos.length > 0 ? (
-          <PhotoGallery photos={photos} />
-        ) : (
-          <div className="flex flex-col items-center justify-center py-24">
-            <p className="font-body text-lg text-text-muted">No photos yet.</p>
-            <p className="mt-2 font-mono text-xs text-text-muted/60">
-              Check back soon.
-            </p>
-          </div>
-        )}
+        <noscript>
+          <p className="mt-12 text-sm text-text-muted">
+            The gallery needs JavaScript to load today&rsquo;s photos.
+          </p>
+        </noscript>
+        <PhotoGallery fallback={buildTimePhotos()} />
       </main>
     </>
   );

@@ -1,30 +1,20 @@
-import fs from "fs";
-import path from "path";
 import { seededShuffle, getDailySeed } from "./seededShuffle";
 
-export interface Photo {
-  filename: string;
-  url: string;
+// Client-safe helpers. The fs read for the build-time fallback lives in
+// app/photography/page.tsx so this file can ship to the browser.
+
+const PHOTO_EXT = /\.(jpe?g|png|webp)$/i;
+
+export function isPhoto(name: string): boolean {
+  return PHOTO_EXT.test(name);
 }
 
-export function getSelectedPhotos(count: number = 5): Photo[] {
-  const photoDir = path.join(process.cwd(), "public", "photography");
+// Same five for everyone all day, new set at 00:00 UTC.
+export function pickDaily(files: string[], count = 5): string[] {
+  return seededShuffle([...files].sort(), getDailySeed()).slice(0, count);
+}
 
-  if (!fs.existsSync(photoDir)) return [];
-
-  const extensions = [".jpg", ".jpeg", ".png", ".webp"];
-  const files = fs
-    .readdirSync(photoDir)
-    .filter((f) => extensions.includes(path.extname(f).toLowerCase()));
-
-  if (files.length === 0) return [];
-
-  const photos: Photo[] = files.map((f) => ({
-    filename: f,
-    url: `/photography/${f}`,
-  }));
-
-  const seed = getDailySeed();
-  const shuffled = seededShuffle(photos, seed);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
+// "sunset_ridge-02.jpg" -> "sunset ridge 02"
+export function altFromFilename(name: string): string {
+  return name.replace(PHOTO_EXT, "").replace(/[-_]+/g, " ").trim();
 }

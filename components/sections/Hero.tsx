@@ -1,160 +1,77 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { siteConfig as config } from "@/lib/config";
-
-const subtitles = [
-  "Developer",
-  "Data Scientist",
-  "Photographer",
-  "Gamer",
-  "Leetcode Hater",
-];
+import Image from "next/image";
+import Link from "next/link";
+import { Camera, FileText } from "@phosphor-icons/react/dist/ssr";
 
 export default function Hero() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
-  const [displayedName, setDisplayedName] = useState(config.name);
-  const [typingDone, setTypingDone] = useState(true);
-
-  // After hydration, reset and start typewriter
-  useEffect(() => {
-    setMounted(true);
-    setDisplayedName("");
-    setTypingDone(false);
-    const name = config.name;
-    let i = 0;
-    const timer = setInterval(() => {
-      i++;
-      setDisplayedName(name.slice(0, i));
-      if (i >= name.length) {
-        clearInterval(timer);
-        setTypingDone(true);
-      }
-    }, 100);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % subtitles.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
+    // Entrance is pure CSS (.rise in globals.css) so the hero paints without waiting for JS.
     <section
       id="hero"
-      className="relative flex min-h-dvh flex-col items-center justify-center px-6"
+      className="mx-auto grid min-h-[100dvh] max-w-6xl items-center gap-10 px-4 pt-24 pb-16 sm:px-6 md:grid-cols-[1.25fr_1fr] md:gap-16"
     >
-      {/* Content */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: {},
-          visible: {
-            transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-          },
-        }}
-      >
-        {/* Thin accent line above name */}
-        <motion.div
-          className="mb-8 h-px w-12 bg-accent"
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: {
-              scaleX: 1,
-              opacity: 1,
-              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-            },
-          }}
-        />
-
-        {/* Name — typewriter effect */}
-        <motion.h1
-          className="font-heading text-text text-center text-4xl font-bold tracking-tight sm:text-5xl md:text-7xl"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { duration: 0.3 },
-            },
-          }}
+      <div className="order-2 md:order-1">
+        <h1
+          style={{ animationDelay: "120ms" }}
+          className="rise text-4xl leading-[1.05] font-extrabold tracking-[-0.03em] text-balance text-text sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl"
         >
-          {displayedName}
-          {mounted && (
-            <span
-              className={`text-accent ml-1 ${typingDone ? "animate-blink" : ""}`}
-            >
-              _
-            </span>
-          )}
-        </motion.h1>
+          Sachin Venugopalan Nair
+        </h1>
 
-        {/* Rotating subtitle */}
-        <motion.div
-          className="mt-6 flex h-8 items-center gap-3 font-mono text-sm tracking-widest text-text-muted uppercase sm:text-base"
-          variants={{
-            hidden: { opacity: 0, y: 12 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-            },
-          }}
+        <p
+          style={{ animationDelay: "160ms" }}
+          className="rise mt-4 text-base font-semibold text-accent-ink sm:text-lg"
         >
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={subtitles[currentIndex]}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-block"
-            >
-              {subtitles[currentIndex]}
-            </motion.span>
-          </AnimatePresence>
-        </motion.div>
+          Data scientist and developer
+        </p>
 
-        {/* Thin accent line below subtitle */}
-        <motion.div
-          className="mt-8 h-px w-8 bg-accent/40"
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: {
-              scaleX: 1,
-              opacity: 1,
-              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-            },
-          }}
-        />
-      </motion.div>
+        <p
+          style={{ animationDelay: "220ms" }}
+          className="rise mt-5 max-w-[52ch] text-sm leading-relaxed text-text-muted sm:text-base"
+        >
+          I have about five years of experience as a data scientist, plus a
+          habit of building the software around my models. I like turning messy
+          data into decisions and shipping polished, end-to-end products. When
+          I&rsquo;m not training models or writing code, I&rsquo;m out trying to
+          take cool photos.
+        </p>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.8 }}
+        <div
+          style={{ animationDelay: "280ms" }}
+          className="rise mt-8 flex flex-wrap gap-3"
+        >
+          <Link
+            href="/resume"
+            className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-transform hover:-translate-y-px active:translate-y-0 active:scale-[0.98]"
+          >
+            <FileText size={16} weight="bold" aria-hidden />
+            Resume
+          </Link>
+          <Link
+            href="/photography"
+            className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm text-text transition-colors hover:bg-surface active:scale-[0.98]"
+          >
+            <Camera size={16} weight="bold" aria-hidden />
+            Photography
+          </Link>
+        </div>
+      </div>
+
+      <div
+        style={{ animationDelay: "100ms" }}
+        className="rise-photo order-1 mx-auto w-full max-w-[200px] sm:max-w-[240px] md:order-2 md:mr-0 md:max-w-[300px] lg:max-w-[340px]"
       >
-        <span className="font-mono text-[10px] tracking-[0.3em] text-text-muted/50 uppercase">
-          Scroll
-        </span>
-        <motion.div
-          className="h-8 w-px bg-text-muted/30"
-          animate={{ scaleY: [0, 1, 0] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          style={{ transformOrigin: "top" }}
-        />
-      </motion.div>
+        {/* The outline follows the image's rounded corners at an even gap on every side. */}
+        <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-surface outline outline-1 outline-offset-[6px] outline-accent/50">
+          <Image
+            src="/profile.jpg"
+            alt="Portrait of Sachin Nair"
+            fill
+            priority
+            sizes="(min-width: 1024px) 340px, (min-width: 768px) 300px, 240px"
+            className="object-cover"
+          />
+        </div>
+      </div>
     </section>
   );
 }

@@ -2,117 +2,104 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { List, X } from "@phosphor-icons/react";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
-  { href: "/projects", label: "Projects" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#experience", label: "Experience" },
   { href: "/photography", label: "Photography" },
+  { href: "/resume", label: "Resume" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close menu on route-like interactions
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!menuOpen) return;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("keydown", onKey);
+    // The menu is md:hidden; without this, widening the window would leave
+    // it "open" and the page scroll-locked.
+    const desktop = matchMedia("(min-width: 768px)");
+    const onDesktop = () => desktop.matches && setMenuOpen(false);
+    desktop.addEventListener("change", onDesktop);
     return () => {
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onDesktop);
     };
   }, [menuOpen]);
 
   return (
-    <header
-      className={`fixed top-0 right-0 left-0 z-50 transition-colors duration-500 ${
-        scrolled ? "bg-bg/80 backdrop-blur-lg" : "bg-transparent"
-      }`}
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* Logo + Site name */}
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-bg/80 backdrop-blur-lg">
+      <nav
+        aria-label="Main"
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"
+      >
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-heading text-lg font-bold tracking-tight text-text transition-colors hover:text-accent"
+          className="flex items-center gap-2.5 text-sm font-bold tracking-tight text-text"
         >
           <Logo />
-          Sachin
+          sachin nair
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="font-mono text-xs tracking-widest text-text-muted uppercase transition-colors hover:text-text"
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="relative z-50 flex h-8 w-8 flex-col items-center justify-center gap-1.5 md:hidden"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-        >
-          <motion.span
-            className="block h-px w-5 bg-text"
-            animate={menuOpen ? { rotate: 45, y: 3.5 } : { rotate: 0, y: 0 }}
-            transition={{ duration: 0.25 }}
-          />
-          <motion.span
-            className="block h-px w-5 bg-text"
-            animate={menuOpen ? { rotate: -45, y: -3.5 } : { rotate: 0, y: 0 }}
-            transition={{ duration: 0.25 }}
-          />
-        </button>
-      </nav>
-
-      {/* Mobile menu overlay */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-bg/95 backdrop-blur-xl md:hidden"
-          >
+        <div className="flex items-center gap-1">
+          <ul className="hidden items-center gap-1 md:flex">
             {navLinks.map(({ href, label }) => (
-              <motion.div
-                key={href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.3 }}
-              >
+              <li key={href}>
                 <Link
                   href={href}
-                  onClick={() => setMenuOpen(false)}
-                  className="font-mono text-sm tracking-widest text-text-muted uppercase transition-colors hover:text-text"
+                  className="rounded-full px-3 py-1.5 text-xs text-text-muted transition-colors hover:bg-surface hover:text-text"
                 >
                   {label}
                 </Link>
-              </motion.div>
+              </li>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </ul>
+
+          <ThemeToggle />
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="grid h-9 w-9 place-items-center rounded-full text-text md:hidden"
+          >
+            {menuOpen ? (
+              <X size={20} aria-hidden />
+            ) : (
+              <List size={20} aria-hidden />
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {menuOpen && (
+        <ul
+          id="mobile-menu"
+          className="flex h-[calc(100dvh-4rem)] flex-col gap-1 border-t border-line bg-bg px-4 pt-6 md:hidden"
+        >
+          {navLinks.map(({ href, label }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 text-2xl font-bold tracking-tight text-text"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </header>
   );
 }

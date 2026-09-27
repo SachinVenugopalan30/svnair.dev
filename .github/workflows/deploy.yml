@@ -21,10 +21,21 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          # Pinned, and matched in the Dockerfile, so CI and the image run the same Bun.
+          bun-version: 1.4.2
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Check copy for em dashes
+        run: |
+          if grep -rn "—" app components lib ./*.json README.md; then
+            echo "::error::Em dashes found in site copy. Use commas, periods, or parentheses."
+            exit 1
+          fi
 
       - name: Build project
         run: bun run build
