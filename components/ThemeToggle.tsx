@@ -28,7 +28,9 @@ export default function ThemeToggle() {
       apply();
       return;
     }
-    document.startViewTransition(apply);
+    // The browser skips the animation (but still applies the theme) if the tab
+    // is hidden mid-switch; `ready` then rejects, which is expected.
+    document.startViewTransition(apply).ready.catch(() => {});
   }
 
   return (
