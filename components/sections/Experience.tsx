@@ -29,7 +29,10 @@ function groupByCompany(items: ExperienceItem[]) {
 export default function Experience() {
   return (
     <section id="experience" className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-      <h2 className="text-3xl font-bold tracking-[-0.03em] text-text sm:text-4xl">
+      <h2
+        data-build
+        className="text-3xl font-bold tracking-[-0.03em] text-text sm:text-4xl"
+      >
         Experience
       </h2>
 
@@ -40,6 +43,7 @@ export default function Experience() {
           return (
             <div
               key={roles[0].id}
+              data-build
               className="grid gap-6 border-t border-line py-10 lg:grid-cols-[15rem_1fr] lg:gap-12"
             >
               <div className="lg:sticky lg:top-24 lg:self-start">

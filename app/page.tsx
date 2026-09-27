@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import BuildOnScroll from "@/components/BuildOnScroll";
 import Hero from "@/components/sections/Hero";
 import Projects from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
@@ -14,6 +15,7 @@ export default function Home() {
         <Experience />
         <Contact />
       </main>
+      <BuildOnScroll />
     </>
   );
 }

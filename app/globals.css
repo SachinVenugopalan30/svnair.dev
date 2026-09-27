@@ -126,15 +126,52 @@ body::before {
   }
 }
 
-/* Scroll reveal, driven by the scroll position instead of JS. Browsers without
-   scroll-driven animations skip it and show the content as-is. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 35%;
-    }
+/* Reverse-Tetris build (see components/BuildOnScroll.tsx). A piece waits
+   below its spot, rises in blocky steps, snaps sideways into its column, then
+   locks in with a small overshoot. Opacity fades on its own, slower curve.
+   Only JS sets data-build="wait", so nothing is hidden without it. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-build="wait"] {
+    opacity: 0;
+    transform: translate(var(--build-dx, 0), 160px);
+  }
+
+  [data-build="go"] {
+    animation:
+      build-rise 1000ms var(--build-delay, 0ms) both,
+      build-fade 1400ms cubic-bezier(0.33, 1, 0.68, 1) var(--build-delay, 0ms)
+        both;
+  }
+}
+
+@keyframes build-rise {
+  0% {
+    transform: translate(var(--build-dx, 0), 160px);
+    animation-timing-function: steps(4, end);
+  }
+  55% {
+    transform: translate(var(--build-dx, 0), 32px);
+    animation-timing-function: steps(1, end);
+  }
+  65% {
+    transform: translate(0, 32px);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  88% {
+    transform: translate(0, -4px);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes build-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

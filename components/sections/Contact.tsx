@@ -27,7 +27,10 @@ export default function Contact() {
       id="contact"
       className="mx-auto max-w-6xl px-4 pt-24 pb-16 sm:px-6"
     >
-      <div className="rounded-xl border border-line bg-surface/60 p-6 sm:p-10 md:p-14">
+      <div
+        data-build
+        className="rounded-xl border border-line bg-surface/60 p-6 sm:p-10 md:p-14"
+      >
         <h2 className="text-3xl font-bold tracking-[-0.03em] text-text sm:text-5xl">
           Say hello.
         </h2>

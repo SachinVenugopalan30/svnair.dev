@@ -28,10 +28,13 @@ export default function Projects() {
 
   return (
     <section id="projects" className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-      <h2 className="text-3xl font-bold tracking-[-0.03em] text-text sm:text-4xl">
+      <h2
+        data-build
+        className="text-3xl font-bold tracking-[-0.03em] text-text sm:text-4xl"
+      >
         Projects
       </h2>
-      <p className="mt-3 max-w-[60ch] text-sm text-text-muted">
+      <p data-build className="mt-3 max-w-[60ch] text-sm text-text-muted">
         Things I&rsquo;ve built, mostly around ML, LLMs, and tools I wanted to
         exist.
       </p>
@@ -40,7 +43,8 @@ export default function Projects() {
         {projects.map((p, i) => (
           <li
             key={p.id}
-            className={`reveal ${SPAN[layout[i]]} flex flex-col rounded-xl border border-line bg-surface/60 p-6 transition-colors hover:border-accent/40 sm:p-7`}
+            data-build
+            className={`${SPAN[layout[i]]} flex flex-col rounded-xl border border-line bg-surface/60 p-6 transition-colors hover:border-accent/40 sm:p-7`}
           >
             <h3 className="text-lg font-bold tracking-tight text-text">
               <a
