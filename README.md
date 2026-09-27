@@ -58,7 +58,7 @@ bun run build    # static site in out/
 
 The photo folder is mounted into the container at runtime, so the build never sees the photos. Instead, Nginx serves a JSON listing of `/photography/` (`autoindex_format json` in `nginx.conf`). The gallery fetches that list in the browser and picks the day's five.
 
-To add photos, copy them to `/root/PersonalBlog/public/photography/` on the server. They appear on the next page load. No rebuild or restart is needed. Subfolders are ignored, and alt text comes from the filename (`sunset_ridge.jpg` becomes "sunset ridge").
+To add photos, copy them to `/root/PersonalBlog/public/photography/` on the server. They appear on the next page load. No rebuild or restart is needed. Subfolders are not shown and their listings return 404, but files inside them can still be fetched by exact URL, so keep only publishable photos there. Alt text comes from the filename (`sunset_ridge.jpg` becomes "sunset ridge").
 
 In `bun dev` there is no Nginx, so the page falls back to the list it read from `public/photography/` at render time.
 

@@ -59,6 +59,11 @@ export default function PhotographyPage() {
           </a>
         </header>
 
+        <noscript>
+          <p className="mt-12 text-sm text-text-muted">
+            The gallery needs JavaScript to load today&rsquo;s photos.
+          </p>
+        </noscript>
         <PhotoGallery fallback={buildTimePhotos()} />
       </main>
     </>

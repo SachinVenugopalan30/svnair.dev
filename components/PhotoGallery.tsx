@@ -46,12 +46,12 @@ function slotStyle(i: number): CSSProperties {
     "--from-y": s.fromY,
     "--spin": `${s.spin}deg`,
     "--toss-delay": `${i * 220}ms`,
-    zIndex: i + 1,
+    "--z": i + 1,
   } as CSSProperties;
 }
 
 const slotClass =
-  "w-[82%] max-w-sm odd:self-start even:self-end hover:z-30 focus-within:z-30 md:absolute md:top-(--y) md:left-(--x) md:w-[clamp(200px,24vw,330px)] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2";
+  "z-(--z) w-[82%] max-w-sm odd:self-start even:self-end hover:z-30 focus-within:z-30 md:absolute md:top-(--y) md:left-(--x) md:w-[clamp(200px,24vw,330px)] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2";
 
 // A bare photo at its tilt, lifted off the table by a soft shadow.
 const printClass =
@@ -61,10 +61,12 @@ function Print({
   name,
   index,
   onOpen,
+  onError,
 }: {
   name: string;
   index: number;
   onOpen: () => void;
+  onError: () => void;
 }) {
   const [loaded, setLoaded] = useState(false);
   const alt = altFromFilename(name);
@@ -89,6 +91,8 @@ function Print({
               if (el?.complete && el.naturalWidth) setLoaded(true);
             }}
             onLoad={() => setLoaded(true)}
+            // A missing or corrupt file would otherwise stay an invisible, clickable print.
+            onError={onError}
             className="block max-h-[60vh] w-full bg-surface object-cover md:max-h-[34vh]"
           />
         </button>
@@ -153,7 +157,13 @@ export default function PhotoGallery({ fallback }: { fallback: string[] }) {
     <>
       <ul className={table}>
         {photos.map((name, i) => (
-          <Print key={name} name={name} index={i} onOpen={() => show(i)} />
+          <Print
+            key={name}
+            name={name}
+            index={i}
+            onOpen={() => show(i)}
+            onError={() => setPhotos((p) => p.filter((n) => n !== name))}
+          />
         ))}
       </ul>
 

@@ -155,6 +155,16 @@ body::before {
 }
 
 /* Rise, overshoot the slot by 4px, settle: the "lock". */
+/* Printing or saving as PDF shows every piece, animated in or not. */
+@media print {
+  [data-build] {
+    opacity: 1 !important;
+    transform: none !important;
+    translate: none !important;
+    animation: none !important;
+  }
+}
+
 @keyframes build-rise {
   0% {
     transform: translate3d(0, 160px, 0);

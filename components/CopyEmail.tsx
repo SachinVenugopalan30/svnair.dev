@@ -7,6 +7,9 @@ type Status = "idle" | "copied" | "failed";
 
 // Receives the spelled-out form ("name [at] host (dot) me") so the real
 // address never appears in the HTML. It is rebuilt only on click.
+const toAddress = (spelled: string) =>
+  spelled.replace(/ \[at\] /g, "@").replace(/ \(dot\) /g, ".");
+
 export default function CopyEmail({ spelled }: { spelled: string }) {
   const [status, setStatus] = useState<Status>("idle");
 
@@ -17,9 +20,7 @@ export default function CopyEmail({ spelled }: { spelled: string }) {
   }, [status]);
 
   async function copy() {
-    const address = spelled
-      .replace(/ \[at\] /g, "@")
-      .replace(/ \(dot\) /g, ".");
+    const address = toAddress(spelled);
     try {
       await navigator.clipboard.writeText(address);
       setStatus("copied");
@@ -60,7 +61,12 @@ export default function CopyEmail({ spelled }: { spelled: string }) {
       </p>
       <p role="status" className="mt-2 min-h-4 text-xs text-text-muted">
         {status === "copied" && "Copied to your clipboard."}
-        {status === "failed" && "Couldn't copy. Select the address instead."}
+        {status === "failed" && (
+          <>
+            Couldn&rsquo;t copy. The address is{" "}
+            <span className="select-all text-text">{toAddress(spelled)}</span>
+          </>
+        )}
       </p>
     </div>
   );

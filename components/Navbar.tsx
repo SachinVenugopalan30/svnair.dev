@@ -23,9 +23,15 @@ export default function Navbar() {
     const onKey = (e: KeyboardEvent) =>
       e.key === "Escape" && setMenuOpen(false);
     document.addEventListener("keydown", onKey);
+    // The menu is md:hidden; without this, widening the window would leave
+    // it "open" and the page scroll-locked.
+    const desktop = matchMedia("(min-width: 768px)");
+    const onDesktop = () => desktop.matches && setMenuOpen(false);
+    desktop.addEventListener("change", onDesktop);
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onDesktop);
     };
   }, [menuOpen]);
 
