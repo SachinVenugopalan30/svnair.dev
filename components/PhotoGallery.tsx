@@ -45,7 +45,7 @@ function slotStyle(i: number): CSSProperties {
     "--from-x": s.fromX,
     "--from-y": s.fromY,
     "--spin": `${s.spin}deg`,
-    "--toss-delay": `${i * 150}ms`,
+    "--toss-delay": `${i * 220}ms`,
     zIndex: i + 1,
   } as CSSProperties;
 }
@@ -53,9 +53,9 @@ function slotStyle(i: number): CSSProperties {
 const slotClass =
   "w-[82%] max-w-sm odd:self-start even:self-end hover:z-30 focus-within:z-30 md:absolute md:top-(--y) md:left-(--x) md:w-[clamp(200px,24vw,330px)] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2";
 
-// The paper around each photo; the bottom lip carries the caption.
-const paperClass =
-  "relative block w-full rotate-(--rot) bg-paper p-2.5 pb-9 text-left shadow-[0_18px_40px_-14px_rgb(18_14_24/0.55)] transition-[rotate,translate,scale,box-shadow] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]";
+// A bare photo at its tilt, lifted off the table by a soft shadow.
+const printClass =
+  "block w-full overflow-hidden rounded-xl rotate-(--rot) shadow-[0_18px_40px_-14px_rgb(18_14_24/0.55)] transition-[rotate,translate,scale,box-shadow] duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]";
 
 function Print({
   name,
@@ -71,13 +71,13 @@ function Print({
 
   return (
     <li className={slotClass} style={slotStyle(index)}>
-      {/* Tossed in only once its image is ready, so no blank paper flies in. */}
+      {/* Tossed in only once its image is ready, so no empty frame flies in. */}
       <div className={loaded ? "toss" : "opacity-0"}>
         <button
           type="button"
           onClick={onOpen}
           aria-label={`Open ${alt}`}
-          className={`${paperClass} cursor-zoom-in hover:-translate-y-1.5 hover:scale-[1.04] hover:rotate-0 hover:shadow-[0_28px_60px_-16px_rgb(18_14_24/0.6)] focus-visible:rotate-0`}
+          className={`${printClass} cursor-zoom-in hover:-translate-y-1.5 hover:scale-[1.04] hover:rotate-0 hover:shadow-[0_28px_60px_-16px_rgb(18_14_24/0.6)] focus-visible:rotate-0`}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -91,9 +91,6 @@ function Print({
             onLoad={() => setLoaded(true)}
             className="block max-h-[60vh] w-full bg-surface object-cover md:max-h-[34vh]"
           />
-          <span className="absolute inset-x-3 bottom-2.5 truncate text-[11px] text-[#5b5261]">
-            {alt}
-          </span>
         </button>
       </div>
     </li>
@@ -132,7 +129,7 @@ export default function PhotoGallery({ fallback }: { fallback: string[] }) {
       <ul aria-busy="true" aria-label="Loading photos" className={table}>
         {SLOTS.map((_, i) => (
           <li key={i} className={slotClass} style={slotStyle(i)}>
-            <div className={`${paperClass} opacity-40`}>
+            <div className={`${printClass} opacity-40`}>
               <div className="aspect-[4/3] w-full bg-surface motion-safe:animate-pulse" />
             </div>
           </li>

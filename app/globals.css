@@ -15,8 +15,6 @@
   /* Light #936514 is only 3.97:1 on --surface. Use this for accent text on surfaces. */
   --accent-ink: light-dark(#7f5711, #e4b55b);
   --on-accent: light-dark(#f4f1f5, #120e18);
-  /* Photo print paper: stays light in both themes, like a real print. */
-  --paper: light-dark(#fdfcfd, #ece8f0);
 
   --tag-0-fg: light-dark(#4f1d72, #cda2eb);
   --tag-0-bg: light-dark(#e7daf1, #2e1e38);
@@ -64,7 +62,6 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-on-accent: var(--on-accent);
-  --color-paper: var(--paper);
   --color-line: color-mix(in oklab, var(--text) 14%, transparent);
 
   --font-sans: var(--font-jetbrains), ui-monospace, monospace;
@@ -191,14 +188,14 @@ body::before {
    delay and leaves nothing behind afterwards, so hover transforms are free. */
 .toss {
   animation:
-    toss 1300ms var(--toss-delay, 0ms) backwards,
-    build-fade 1100ms cubic-bezier(0.33, 1, 0.68, 1) var(--toss-delay, 0ms)
+    toss 1900ms var(--toss-delay, 0ms) backwards,
+    build-fade 1600ms cubic-bezier(0.33, 1, 0.68, 1) var(--toss-delay, 0ms)
       backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .toss {
-    animation: build-fade 600ms ease-out backwards;
+    animation: build-fade 900ms ease-out backwards;
   }
 }
 
