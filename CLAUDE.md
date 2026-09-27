@@ -34,7 +34,7 @@ No test suite exists in this project.
 - Light accent is 3.97:1 on surface, so accent-colored text uses `text-accent-ink` (#7F5711 in light).
 - Tech tags: `components/TechPill.tsx` hashes the name to `--tag-0..7-fg/bg`. All pairs checked at >= 4.5:1 in both themes; re-check if you change them.
 - `dark:` is a custom variant that follows the same rule as the palette.
-- Motion: hero entrance is CSS (`.rise`, `.rise-photo`) so it paints without JS; project tiles use `.reveal` (scroll-driven `animation-timeline: view()`). Both are gated on `prefers-reduced-motion: no-preference`. Avoid scroll listeners.
+- Motion: hero entrance is CSS (`.rise`, `.rise-photo`) so it paints without JS; elements marked `data-build` get a one-time reverse-Tetris entrance (`components/BuildOnScroll.tsx` + `build-rise`/`build-fade` in globals.css). Only JS hides pieces, and only ones below the fold, so no-JS and reduced motion show content as-is. Avoid scroll listeners.
 
 **Theme toggle:** `components/ThemeToggle.tsx` sets `data-theme` and `localStorage.theme`; an inline script in `app/layout.tsx` applies the saved value before paint. The icon swap is pure CSS, so the toggle has no React state.
 
