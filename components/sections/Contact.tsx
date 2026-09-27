@@ -38,7 +38,9 @@ export default function Contact() {
 
         {/* Spelled out so scrapers don't pick up the address from the HTML. */}
         <CopyEmail
-          spelled={config.email.replace("@", " at ").replace(/\./g, " dot ")}
+          spelled={config.email
+            .replace("@", " [at] ")
+            .replace(/\./g, " (dot) ")}
         />
 
         <ul className="mt-12 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-line pt-8 sm:grid-cols-3 md:grid-cols-5">

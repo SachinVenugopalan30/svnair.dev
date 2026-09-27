@@ -177,6 +177,14 @@ body::before {
     transparent;
 }
 
+/* Theme switch crossfade (see ThemeToggle). Slower than the 250ms default so
+   the palette change reads as a fade, not a flash. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 dialog::backdrop {
   background: color-mix(in oklab, #120e18 88%, transparent);
   backdrop-filter: blur(6px);

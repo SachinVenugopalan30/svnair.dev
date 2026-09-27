@@ -5,8 +5,8 @@ import { Check, Copy } from "@phosphor-icons/react";
 
 type Status = "idle" | "copied" | "failed";
 
-// Receives the spelled-out form ("name at host dot me") so the real address
-// never appears in the HTML. It is rebuilt only when the button is clicked.
+// Receives the spelled-out form ("name [at] host (dot) me") so the real
+// address never appears in the HTML. It is rebuilt only on click.
 export default function CopyEmail({ spelled }: { spelled: string }) {
   const [status, setStatus] = useState<Status>("idle");
 
@@ -17,7 +17,9 @@ export default function CopyEmail({ spelled }: { spelled: string }) {
   }, [status]);
 
   async function copy() {
-    const address = spelled.replace(/ at /g, "@").replace(/ dot /g, ".");
+    const address = spelled
+      .replace(/ \[at\] /g, "@")
+      .replace(/ \(dot\) /g, ".");
     try {
       await navigator.clipboard.writeText(address);
       setStatus("copied");
@@ -29,26 +31,37 @@ export default function CopyEmail({ spelled }: { spelled: string }) {
 
   return (
     <div className="mt-8">
-      <p className="text-sm break-words text-text sm:text-base">{spelled}</p>
-      <div className="mt-4 flex flex-wrap items-center gap-3">
+      <p className="flex flex-wrap items-baseline gap-x-2 text-sm sm:text-base">
+        <span className="text-text-muted">email:</span>
         <button
           type="button"
           onClick={copy}
-          className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-transform hover:-translate-y-px active:translate-y-0 active:scale-[0.98]"
+          title="Copy email address"
+          aria-label={`${spelled}. Copy email address`}
+          className="group inline-flex items-baseline gap-2 rounded-md text-left font-bold break-words text-accent-ink decoration-dotted underline-offset-4 hover:underline"
         >
+          {spelled}
           {status === "copied" ? (
-            <Check size={16} weight="bold" aria-hidden />
+            <Check
+              size={14}
+              weight="bold"
+              aria-hidden
+              className="shrink-0 self-center"
+            />
           ) : (
-            <Copy size={16} weight="bold" aria-hidden />
+            <Copy
+              size={14}
+              weight="bold"
+              aria-hidden
+              className="shrink-0 self-center opacity-50 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+            />
           )}
-          {status === "copied" ? "Copied" : "Copy email"}
         </button>
-        <span role="status" className="text-xs text-text-muted">
-          {status === "copied" && "Email address copied to your clipboard."}
-          {status === "failed" &&
-            "Couldn't copy. Select the address above instead."}
-        </span>
-      </div>
+      </p>
+      <p role="status" className="mt-2 min-h-4 text-xs text-text-muted">
+        {status === "copied" && "Copied to your clipboard."}
+        {status === "failed" && "Couldn't copy. Select the address instead."}
+      </p>
     </div>
   );
 }

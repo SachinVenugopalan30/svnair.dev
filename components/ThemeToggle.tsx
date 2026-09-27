@@ -13,10 +13,22 @@ function isDark(): boolean {
 export default function ThemeToggle() {
   function toggle() {
     const next = isDark() ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    try {
-      localStorage.setItem("theme", next);
-    } catch {}
+    const apply = () => {
+      document.documentElement.dataset.theme = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {}
+    };
+    // Crossfade the whole page between themes (timing in globals.css).
+    // Browsers without view transitions, or with reduced motion on, switch instantly.
+    if (
+      !document.startViewTransition ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      apply();
+      return;
+    }
+    document.startViewTransition(apply);
   }
 
   return (
