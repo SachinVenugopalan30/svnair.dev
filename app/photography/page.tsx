@@ -41,17 +41,21 @@ export default function PhotographyPage() {
             href={config.socialMedia.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-5 inline-flex items-center gap-2 text-sm text-text-muted transition-colors hover:text-text"
+            className="group mt-5 inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted transition-colors hover:text-text"
           >
             <InstagramLogo size={18} aria-hidden />
-            More on Instagram
-            <span className="font-bold text-accent-ink">{instagramHandle}</span>
-            <ArrowUpRight
-              size={12}
-              weight="bold"
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
+            <span className="whitespace-nowrap">More on Instagram</span>
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+              <span className="font-bold text-accent-ink">
+                {instagramHandle}
+              </span>
+              <ArrowUpRight
+                size={12}
+                weight="bold"
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </span>
           </a>
         </header>
 

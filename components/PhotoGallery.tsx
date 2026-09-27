@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
 import { altFromFilename, isPhoto, pickDaily } from "@/lib/photos";
 
@@ -25,25 +25,78 @@ async function listRuntimePhotos(): Promise<string[] | null> {
 
 const src = (name: string) => `/photography/${encodeURIComponent(name)}`;
 
-function Photo({ name, index }: { name: string; index: number }) {
+// Where each print lands on the "table" (desktop), its resting tilt, and the
+// off-screen spot it is tossed from with how far it spins on the way in.
+// Hand-placed for up to five prints; x/y are the print's center.
+const SLOTS = [
+  { x: "17%", y: "30%", rot: -7, fromX: "-70vw", fromY: "-25vh", spin: -540 },
+  { x: "49%", y: "24%", rot: 5, fromX: "10vw", fromY: "-90vh", spin: 450 },
+  { x: "82%", y: "34%", rot: -4, fromX: "75vw", fromY: "-20vh", spin: 540 },
+  { x: "33%", y: "72%", rot: 4, fromX: "-65vw", fromY: "70vh", spin: -450 },
+  { x: "67%", y: "73%", rot: -8, fromX: "75vw", fromY: "65vh", spin: 360 },
+];
+
+function slotStyle(i: number): CSSProperties {
+  const s = SLOTS[i % SLOTS.length];
+  return {
+    "--x": s.x,
+    "--y": s.y,
+    "--rot": `${s.rot}deg`,
+    "--from-x": s.fromX,
+    "--from-y": s.fromY,
+    "--spin": `${s.spin}deg`,
+    "--toss-delay": `${i * 150}ms`,
+    zIndex: i + 1,
+  } as CSSProperties;
+}
+
+const slotClass =
+  "w-[82%] max-w-sm odd:self-start even:self-end hover:z-30 focus-within:z-30 md:absolute md:top-(--y) md:left-(--x) md:w-[clamp(200px,24vw,330px)] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2";
+
+// The paper around each photo; the bottom lip carries the caption.
+const paperClass =
+  "relative block w-full rotate-(--rot) bg-paper p-2.5 pb-9 text-left shadow-[0_18px_40px_-14px_rgb(18_14_24/0.55)] transition-[rotate,translate,scale,box-shadow] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]";
+
+function Print({
+  name,
+  index,
+  onOpen,
+}: {
+  name: string;
+  index: number;
+  onOpen: () => void;
+}) {
   const [loaded, setLoaded] = useState(false);
+  const alt = altFromFilename(name);
+
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src(name)}
-      alt={altFromFilename(name)}
-      loading={index < 2 ? "eager" : "lazy"}
-      decoding="async"
-      // Cached images can finish before hydration, so check on mount too.
-      ref={(el) => {
-        if (el?.complete && el.naturalWidth) setLoaded(true);
-      }}
-      onLoad={() => setLoaded(true)}
-      style={{ transitionDelay: `${index * 80}ms` }}
-      className={`w-full rounded-xl bg-surface transition duration-700 ease-out motion-reduce:transition-none ${
-        loaded ? "opacity-100" : "min-h-48 opacity-0"
-      }`}
-    />
+    <li className={slotClass} style={slotStyle(index)}>
+      {/* Tossed in only once its image is ready, so no blank paper flies in. */}
+      <div className={loaded ? "toss" : "opacity-0"}>
+        <button
+          type="button"
+          onClick={onOpen}
+          aria-label={`Open ${alt}`}
+          className={`${paperClass} cursor-zoom-in hover:-translate-y-1.5 hover:scale-[1.04] hover:rotate-0 hover:shadow-[0_28px_60px_-16px_rgb(18_14_24/0.6)] focus-visible:rotate-0`}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src(name)}
+            alt={alt}
+            decoding="async"
+            // Cached images can finish before hydration, so check on mount too.
+            ref={(el) => {
+              if (el?.complete && el.naturalWidth) setLoaded(true);
+            }}
+            onLoad={() => setLoaded(true)}
+            className="block max-h-[60vh] w-full bg-surface object-cover md:max-h-[34vh]"
+          />
+          <span className="absolute inset-x-3 bottom-2.5 truncate text-[11px] text-[#5b5261]">
+            {alt}
+          </span>
+        </button>
+      </div>
+    </li>
   );
 }
 
@@ -71,20 +124,20 @@ export default function PhotoGallery({ fallback }: { fallback: string[] }) {
     );
   }
 
+  const table =
+    "relative mt-12 flex flex-col gap-10 md:block md:h-[min(90vh,820px)]";
+
   if (status === "loading") {
     return (
-      <div
-        aria-busy="true"
-        aria-label="Loading photos"
-        className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3"
-      >
-        {["h-72", "h-96", "h-60", "h-80", "h-64"].map((h) => (
-          <div
-            key={h}
-            className={`${h} mb-4 break-inside-avoid rounded-xl bg-surface motion-safe:animate-pulse`}
-          />
+      <ul aria-busy="true" aria-label="Loading photos" className={table}>
+        {SLOTS.map((_, i) => (
+          <li key={i} className={slotClass} style={slotStyle(i)}>
+            <div className={`${paperClass} opacity-40`}>
+              <div className="aspect-[4/3] w-full bg-surface motion-safe:animate-pulse" />
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     );
   }
 
@@ -101,18 +154,9 @@ export default function PhotoGallery({ fallback }: { fallback: string[] }) {
 
   return (
     <>
-      <ul className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3">
+      <ul className={table}>
         {photos.map((name, i) => (
-          <li key={name} className="mb-4 break-inside-avoid">
-            <button
-              type="button"
-              onClick={() => show(i)}
-              aria-label={`Open ${altFromFilename(name)}`}
-              className="block w-full cursor-zoom-in overflow-hidden rounded-xl transition-transform duration-500 hover:scale-[1.01] motion-reduce:transition-none"
-            >
-              <Photo name={name} index={i} />
-            </button>
-          </li>
+          <Print key={name} name={name} index={i} onOpen={() => show(i)} />
         ))}
       </ul>
 

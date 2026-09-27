@@ -21,7 +21,7 @@ No test suite exists in this project.
 **Pages:**
 - `/`: Hero → Projects → Experience → Contact (`components/sections/`). Sections are server components.
 - `/projects`: meta-refresh stub to `/#projects` (static export cannot 301), `noindex`.
-- `/photography`: daily five photos, masonry columns, native `<dialog>` lightbox with arrow-key navigation.
+- `/photography`: daily five photos as tilted prints "tossed" onto a table (hand-placed `SLOTS` in `components/PhotoGallery.tsx`, `.toss` keyframes in globals.css; single tilted column on mobile), native `<dialog>` lightbox with arrow-key navigation.
 - `/resume`: embeds `/resume.pdf`.
 
 **Content data:** `experience.json` and `projects.json` at project root are the only data files. Edit these to update content. Personal info (name, email, social links) lives in `lib/config.ts`.
