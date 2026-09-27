@@ -1,13 +1,13 @@
 import {
   ArrowUpRight,
   DiscordLogo,
-  EnvelopeSimple,
   GithubLogo,
   InstagramLogo,
   LinkedinLogo,
   SteamLogo,
 } from "@phosphor-icons/react/dist/ssr";
 import { siteConfig as config } from "@/lib/config";
+import CopyEmail from "@/components/CopyEmail";
 
 const socials = [
   { name: "GitHub", href: config.socialMedia.github, Icon: GithubLogo },
@@ -36,14 +36,10 @@ export default function Contact() {
           to talk shop? My inbox is open.
         </p>
 
-        <a
-          href={`mailto:${config.email}`}
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-transform hover:-translate-y-px active:translate-y-0 active:scale-[0.98]"
-        >
-          <EnvelopeSimple size={16} weight="bold" aria-hidden />
-          Email me
-        </a>
-        <p className="mt-3 text-xs break-all text-text-muted">{config.email}</p>
+        {/* Spelled out so scrapers don't pick up the address from the HTML. */}
+        <CopyEmail
+          spelled={config.email.replace("@", " at ").replace(/\./g, " dot ")}
+        />
 
         <ul className="mt-12 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-line pt-8 sm:grid-cols-3 md:grid-cols-5">
           {socials.map(({ name, href, Icon }) => (

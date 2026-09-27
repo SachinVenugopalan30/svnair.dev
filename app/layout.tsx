@@ -53,7 +53,9 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>
+      {/* Reading extensions (bionic-reading style) add attributes to <body>
+          before React hydrates. This silences only <body>'s own attributes. */}
+      <body suppressHydrationWarning>
         {children}
         {process.env.NEXT_PUBLIC_UMAMI_API_URL &&
         process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID ? (

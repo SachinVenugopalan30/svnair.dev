@@ -58,20 +58,16 @@ export default function Hero() {
 
       <div
         style={{ animationDelay: "100ms" }}
-        className="rise-photo relative order-1 mx-auto w-full max-w-[200px] sm:max-w-[260px] md:order-2 md:max-w-none"
+        className="rise-photo order-1 mx-auto w-full max-w-[200px] sm:max-w-[240px] md:order-2 md:mr-0 md:max-w-[300px] lg:max-w-[340px]"
       >
-        {/* Offset frame gives the portrait some depth against the wash. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 translate-x-3 translate-y-3 rounded-xl border border-accent/50"
-        />
-        <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-surface">
+        {/* The outline follows the image's rounded corners at an even gap on every side. */}
+        <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-surface outline outline-1 outline-offset-[6px] outline-accent/50">
           <Image
             src="/profile.jpg"
             alt="Portrait of Sachin Nair"
             fill
             priority
-            sizes="(min-width: 768px) 40vw, 260px"
+            sizes="(min-width: 1024px) 340px, (min-width: 768px) 300px, 240px"
             className="object-cover"
           />
         </div>
