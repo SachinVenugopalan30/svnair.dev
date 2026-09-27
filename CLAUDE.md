@@ -5,33 +5,42 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-bun dev          # Start dev server with Turbopack
+bun dev          # Start dev server (Turbopack is the default in Next 16)
 bun run build    # Static export to out/
-bun run lint     # ESLint
+bun run lint     # eslint . (flat config in eslint.config.mjs; `next lint` no longer exists)
 ```
 
 No test suite exists in this project.
 
 ## Architecture
 
-**Stack:** Next.js 15 (static export) + React 19 + Tailwind CSS v4 + Framer Motion, built with Bun.
+**Stack:** Next.js 16 (static export) + React 19 + Tailwind CSS v4 + Phosphor icons, built with Bun. No animation library: motion is CSS (see Styling).
 
-**Output:** `next build` produces `out/` (not `dist/`). The site is fully static — no server-side rendering, no API routes. `next.config.ts` sets `output: "export"` and `images.unoptimized: true`.
+**Output:** `next build` produces `out/` (not `dist/`). The site is fully static — no server-side rendering, no API routes. `next.config.ts` sets `output: "export"`, `images.unoptimized: true`, and `agentRules: false` (stops `next dev` from appending a block to this file).
 
 **Pages:**
-- `/` — Single-page portfolio (Hero → About → Experience → Contact sections)
-- `/projects` — Projects grid from `projects.json`
-- `/photography` — Masonry photo gallery with lightbox
+- `/`: Hero → Projects → Experience → Contact (`components/sections/`). Sections are server components.
+- `/projects`: meta-refresh stub to `/#projects` (static export cannot 301), `noindex`.
+- `/photography`: daily five photos, masonry columns, native `<dialog>` lightbox with arrow-key navigation.
+- `/resume`: embeds `/resume.pdf`.
 
 **Content data:** `experience.json` and `projects.json` at project root are the only data files. Edit these to update content. Personal info (name, email, social links) lives in `lib/config.ts`.
 
-**Photography:** `lib/photos.ts` reads `public/photography/` at build time using `fs.readdirSync`. On production the directory is volume-mounted (empty at build time). Daily rotation uses a seeded PRNG (`lib/seededShuffle.ts`) keyed by UTC date.
+**Photography:** the directory is volume-mounted at runtime, so it is empty at build time. `nginx.conf` serves `/photography/` as a JSON listing (`autoindex_format json`); `components/PhotoGallery.tsx` fetches it and picks five with `pickDaily` (`lib/photos.ts`, seeded PRNG from `lib/seededShuffle.ts` keyed by UTC date). In `bun dev` the fetch fails and the page falls back to an `fs.readdirSync` list passed from `app/photography/page.tsx`. `lib/photos.ts` must stay client-safe (no `fs`).
 
-**Styling:** Tailwind CSS v4 — uses `@theme` block in `app/globals.css` instead of a JS config file. Design tokens are CSS variables referenced throughout:
-- Colors: `--color-bg` (#0A0A0B), `--color-surface` (#141416), `--color-text` (#E8E4E0), `--color-accent` (#C4503A)
-- Fonts: `--font-heading` (IBM Plex Serif), `--font-body` (Outfit), `--font-mono` (JetBrains Mono)
+**Styling:** Tailwind CSS v4, configured in `app/globals.css` (no JS config).
+- Palette: raw values on `:root` via `light-dark(light, dark)`; `color-scheme` picks the side. `:root[data-theme]` forces a theme, otherwise the system preference applies. `@theme inline` maps them to `bg`, `surface`, `text`, `text-muted`, `accent`, `accent-ink`, `on-accent`, `line`. Never hardcode hex in components.
+- Dark: bg #120E18, surface #1E1828, text #ECE8F0, muted #9D94A5, accent #E4B55B. Light: #F4F1F5, #E7E1E9, #211925, #625968, #936514. Chosen by the user.
+- Light accent is 3.97:1 on surface, so accent-colored text uses `text-accent-ink` (#7F5711 in light).
+- Tech tags: `components/TechPill.tsx` hashes the name to `--tag-0..7-fg/bg`. All pairs checked at >= 4.5:1 in both themes; re-check if you change them.
+- `dark:` is a custom variant that follows the same rule as the palette.
+- Motion: hero entrance is CSS (`.rise`, `.rise-photo`) so it paints without JS; project tiles use `.reveal` (scroll-driven `animation-timeline: view()`). Both are gated on `prefers-reduced-motion: no-preference`. Avoid scroll listeners.
 
-**Fonts:** Loaded via `next/font/google` in `app/layout.tsx`, injected as CSS variables (`--font-display`, `--font-outfit`, `--font-jetbrains`) on `<html>`, then mapped to semantic tokens in `@theme`.
+**Theme toggle:** `components/ThemeToggle.tsx` sets `data-theme` and `localStorage.theme`; an inline script in `app/layout.tsx` applies the saved value before paint. The icon swap is pure CSS, so the toggle has no React state.
+
+**Fonts:** JetBrains Mono only, via `next/font/google` in `app/layout.tsx` as `--font-jetbrains`, mapped to `--font-sans` and `--font-mono`.
+
+**Copy rule:** no em dashes anywhere in site copy (user requirement). CI greps `app components lib *.json README.md` and fails on one.
 
 **Analytics:** Umami via a single `<Script>` tag in `layout.tsx`. Requires `NEXT_PUBLIC_UMAMI_WEBSITE_ID` and `NEXT_PUBLIC_UMAMI_API_URL` env vars (passed as Docker build args in CI).
 
@@ -53,7 +62,7 @@ The Traefik dashboard is bound to loopback (`127.0.0.1:8080`) since `--api.insec
 
 The resume is served as a static PDF at `/resume.pdf`, embedded by `/resume`.
 
-- **Production:** The PDF is volume-mounted into the Nginx container from `./data/resume.pdf` (relative to `docker-compose.prod.yml` on the server). Upload a new resume directly to the server via rsync/scp — no rebuild or container restart is required.
+- **Production:** The PDF is volume-mounted into the Nginx container from `/root/PersonalBlog/data/resume.pdf` (see `quadlet/portfolio.container`). Upload a new resume to that path with rsync/scp. No rebuild or restart is needed.
 - **Local development:** A placeholder `public/resume.pdf` is used by `bun dev`. It is gitignored and not deployed.
 
 ## Frontend Aesthetics
@@ -65,9 +74,9 @@ Avoid generic AI-generated aesthetics:
 - Cookie-cutter design that lacks context-specific character
 
 Focus on:
-- **Typography:** Choose beautiful, distinctive fonts. The current stack (IBM Plex Serif + Outfit) has character — preserve it.
-- **Color & Theme:** Commit to the dark, warm aesthetic. Use the existing CSS variables. The burnt sienna accent (#C4503A) is intentional — don't dilute it.
-- **Motion:** Use Framer Motion for React animations. Prioritize high-impact moments: staggered page-load reveals over scattered micro-interactions.
+- **Typography:** JetBrains Mono across the whole site is a deliberate user choice. Build hierarchy with weight, size, and tracking, not a second family.
+- **Color & Theme:** Dusk violet base with an amber accent, in both light and dark. Use the tokens; keep one accent.
+- **Motion:** One authored moment (the hero entrance) plus light scroll reveals. Prefer CSS over JS animation; honor reduced motion.
 - **Backgrounds:** Create depth with layered CSS gradients (see `body::before` in `globals.css`), not solid fills.
 
 Interpret creatively and make unexpected choices that feel genuinely designed for the context.

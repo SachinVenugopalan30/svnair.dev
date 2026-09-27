@@ -1,88 +1,96 @@
-# Personal Portfolio
+# svnair.dev
 
-A statically exported personal portfolio site built with Next.js 15, styled with Tailwind CSS v4, and animated with Framer Motion. Served via Nginx in Docker, with optional Traefik for HTTPS.
+Source for [svnair.dev](https://svnair.dev), my personal site. It is a static Next.js export served by Nginx, running in rootful Podman behind Traefik.
 
-## Tech Stack
+## Stack
 
-- **Framework:** Next.js 15 (static export via `output: 'export'`)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4
-- **Animations:** Framer Motion
-- **Runtime / Package Manager:** Bun
-- **Serving:** Nginx (Alpine)
-- **Deployment:** Docker + Traefik (Let's Encrypt TLS)
-- **Analytics:** Umami (self-hosted, optional)
+- Next.js 16 with `output: "export"` (static HTML, no server code)
+- React 19 and TypeScript
+- Tailwind CSS v4, with tokens in `app/globals.css`
+- JetBrains Mono for all text, loaded through `next/font`
+- Phosphor icons
+- Bun for installs and scripts
+- Nginx (Alpine) in a container, run by Podman Quadlet units, with Traefik in front
+- Umami analytics (optional)
 
-## Project Structure
+## Pages
 
-```
-app/                  # Next.js app router pages and layouts
-  layout.tsx          # Root layout, fonts, analytics script
-  page.tsx            # Home page (hero, about, experience, projects)
-  projects/page.tsx   # Projects listing
-  photography/page.tsx # Photography gallery
-components/           # Client components (Navbar, SectionNav, PhotoGallery, etc.)
-lib/                  # Utilities (config, photo loader, seeded shuffle)
-experience.json       # Work experience data
-projects.json         # Project data
-public/photography/   # Photo directory (volume-mounted in production)
-```
+- `/` has the hero, projects, experience, and contact sections, in that order.
+- `/photography` shows five photos a day, picked by a seeded shuffle keyed to the UTC date.
+- `/resume` embeds `/resume.pdf`.
+- `/projects` redirects to `/#projects`. It exists so old links still work.
 
-## Local Development
+## Editing content
 
-Requires [Bun](https://bun.sh) installed.
+| What | Where |
+|---|---|
+| Work history | `experience.json` |
+| Projects | `projects.json` |
+| Name, email, social links | `lib/config.ts` |
+| Bio | `components/sections/Hero.tsx` |
+
+In `experience.json`, consecutive entries with the same `company` render as one block with several roles. Each name in `technologies` becomes a colored tag. The color comes from a hash of the name, so a technology has the same color everywhere on the site.
+
+CI fails the build if site copy contains an em dash. Use commas, periods, or parentheses instead.
+
+## Theme
+
+Colors are CSS custom properties set with `light-dark()` in `app/globals.css`, so one set of tokens covers both themes. Components use the Tailwind names (`bg-bg`, `text-text-muted`, `text-accent`, and so on) and never raw hex values.
+
+On a first visit the site follows the system `prefers-color-scheme` setting. The sun/moon button in the nav stores the visitor's choice in `localStorage`, and a small script in `app/layout.tsx` applies it before first paint.
+
+Every text and tag pair meets WCAG AA (4.5:1) in both themes. Light-mode accent text on a surface uses `--accent-ink`, a darker shade, because the base accent is only 3.97:1 there.
+
+## Local development
+
+Requires [Bun](https://bun.sh).
 
 ```bash
 bun install
-bun run dev
+bun dev          # http://localhost:3000
+bun run lint
+bun run build    # static site in out/
 ```
 
-The dev server starts at `http://localhost:3000` with Turbopack enabled.
+`public/profile.jpg`, `public/resume.pdf`, and `public/photography/` are gitignored. Put local copies there to see them in dev.
 
-## Building
+## Photography
 
-```bash
-bun run build
-```
+The photo folder is mounted into the container at runtime, so the build never sees the photos. Instead, Nginx serves a JSON listing of `/photography/` (`autoindex_format json` in `nginx.conf`). The gallery fetches that list in the browser and picks the day's five.
 
-This produces a fully static site in the `out/` directory.
+To add photos, copy them to `/root/PersonalBlog/public/photography/` on the server. They appear on the next page load. No rebuild or restart is needed. Subfolders are ignored, and alt text comes from the filename (`sunset_ridge.jpg` becomes "sunset ridge").
+
+In `bun dev` there is no Nginx, so the page falls back to the list it read from `public/photography/` at render time.
 
 ## Deployment
 
-### Docker (recommended)
+`.github/workflows/deploy.yml` runs on every push and pull request to `main`:
 
-The included `Dockerfile` runs a two-stage build: Bun installs dependencies and builds the site, then the static output is copied into an Nginx Alpine image.
+1. `test`: install, lint, em dash check, and build. This runs on pull requests too.
+2. `build-and-push`: builds the Docker image and pushes it to GHCR. Runs only on pushes to `main`.
+3. `deploy`: connects to the server over SSH, runs `git pull`, copies `quadlet/*` into `/etc/containers/systemd/`, reloads systemd, and restarts `portfolio.service`. The unit sets `Pull=newer`, so the restart pulls the new image.
 
-```bash
-docker build -t portfolio .
-docker run -p 80:80 portfolio
-```
+The `Dockerfile` has two stages. Bun builds `out/`, and `nginx:alpine` serves it.
 
-### Docker Compose with Traefik
+On the server, three paths are mounted into the container read-only (see `quadlet/portfolio.container`):
 
-The `docker-compose.yml` sets up the portfolio behind Traefik with automatic Let's Encrypt certificates. Before running:
+| Server path | Served at |
+|---|---|
+| `/root/PersonalBlog/public/profile.jpg` | `/profile.jpg` |
+| `/root/PersonalBlog/public/photography/` | `/photography/` |
+| `/root/PersonalBlog/data/resume.pdf` | `/resume.pdf` |
 
-1. Create the external Traefik network: `docker network create traefik`
-2. Update the domain and email in `docker-compose.yml`
-3. Optionally set analytics env vars in a `.env` file
+Replacing any of these files takes effect immediately.
 
-```env
-NEXT_PUBLIC_UMAMI_WEBSITE_ID=your-website-id
-NEXT_PUBLIC_UMAMI_API_URL=https://your-umami-instance.com
-NEXT_PUBLIC_ANALYTICS_ENABLED=true
-```
+Traefik terminates TLS using the ACME DNS-01 challenge, because Cloudflare proxies the origin and the other challenge types cannot reach it. It reads `CF_DNS_API_TOKEN` from `/root/PersonalBlog/.env` on the server.
 
-Then start everything:
+### Repository secrets
 
-```bash
-docker compose up -d
-```
-
-Photography images are volume-mounted from `public/photography/` into the Nginx container, so photos can be updated without rebuilding.
-
-### CI/CD
-
-A GitHub Actions workflow (`.github/workflows/deploy.yml`) handles automated builds and deployment. Add the required secrets to your repository settings.
+| Secret | Used for |
+|---|---|
+| `HOST`, `USERNAME`, `SSH_PRIVATE_KEY`, `PORT` (optional) | SSH deploy |
+| `DEPLOY_PATH` (optional, default `/root/PersonalBlog`) | Checkout path on the server |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID`, `NEXT_PUBLIC_UMAMI_API_URL` | Analytics, baked in at build time |
 
 ## License
 

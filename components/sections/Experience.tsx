@@ -1,8 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import experienceData from "@/experience.json";
+import { TechList } from "@/components/TechPill";
 
 interface ExperienceItem {
   id: number;
@@ -17,137 +15,86 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = experienceData;
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
+// Consecutive roles at the same company render as one block (newest role first).
+function groupByCompany(items: ExperienceItem[]) {
+  const groups: ExperienceItem[][] = [];
+  for (const item of items) {
+    const last = groups.at(-1);
+    if (last && last[0].company === item.company) last.push(item);
+    else groups.push([item]);
+  }
+  return groups;
+}
 
 export default function Experience() {
   return (
-    <section id="experience" className="px-6 py-32">
-      <div className="mx-auto max-w-3xl">
-        {/* Section heading */}
-        <motion.h2
-          className="font-heading text-text mb-6 text-center text-4xl tracking-tight sm:text-5xl"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          Experience
-        </motion.h2>
+    <section id="experience" className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <h2 className="text-3xl font-bold tracking-[-0.03em] text-text sm:text-4xl">
+        Experience
+      </h2>
 
-        <motion.div
-          className="mb-16 flex justify-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={fadeInUp}
-        >
-          <Link
-            href="/resume"
-            className="font-mono group inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-5 py-2.5 text-sm tracking-wide text-accent transition-all duration-200 hover:border-accent/60 hover:bg-accent/20"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform duration-200 group-hover:-translate-y-0.5"
+      <div className="mt-12">
+        {groupByCompany(experiences).map((roles) => {
+          const { company, link } = roles[0];
+          const span = `${roles.at(-1)!.startDate} - ${roles[0].endDate}`;
+          return (
+            <div
+              key={roles[0].id}
+              className="grid gap-6 border-t border-line py-10 lg:grid-cols-[15rem_1fr] lg:gap-12"
             >
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="16" y1="13" x2="8" y2="13" />
-              <line x1="16" y1="17" x2="8" y2="17" />
-              <polyline points="10 9 9 9 8 9" />
-            </svg>
-            View Resume
-          </Link>
-        </motion.div>
+              <div className="lg:sticky lg:top-24 lg:self-start">
+                <h3 className="text-lg font-bold tracking-tight text-text">
+                  {link ? (
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-accent-ink"
+                    >
+                      {company}
+                      <ArrowUpRight
+                        size={14}
+                        weight="bold"
+                        className="ml-1 inline align-baseline"
+                        aria-hidden
+                      />
+                    </a>
+                  ) : (
+                    company
+                  )}
+                </h3>
+                <p className="mt-1 text-xs text-text-muted tabular-nums">
+                  {span}
+                </p>
+              </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical accent line */}
-          <div className="absolute left-0 top-0 bottom-0 w-px bg-accent/20 sm:left-4" />
-
-          {/* Experience cards */}
-          <div className="flex flex-col gap-12">
-            {experiences.map((exp) => (
-              <motion.div
-                key={exp.id}
-                className="relative pl-8 sm:pl-14"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
-                variants={fadeInUp}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-0 top-1.5 h-2 w-2 -translate-x-[3.5px] rounded-full bg-accent sm:left-4" />
-
-                {/* Card */}
-                <div className="rounded-xl border border-white/5 bg-surface/50 p-6 sm:p-8">
-                  {/* Header */}
-                  <div className="mb-4">
-                    <h3 className="font-heading text-text text-xl sm:text-2xl">
-                      {exp.position}
-                    </h3>
-                    <div className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-text-muted">
-                      {exp.link ? (
-                        <a
-                          href={exp.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-accent transition-colors hover:text-accent-hover"
-                        >
-                          {exp.company}
-                        </a>
-                      ) : (
-                        <span>{exp.company}</span>
+              <ol className="space-y-10">
+                {roles.map((r) => (
+                  <li key={r.id}>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                      <h4 className="text-base font-semibold text-accent-ink">
+                        {r.position}
+                      </h4>
+                      {roles.length > 1 && (
+                        <p className="text-xs text-text-muted tabular-nums">
+                          {r.startDate} - {r.endDate}
+                        </p>
                       )}
-                      <span className="text-text-muted/40">/</span>
-                      <span className="font-mono text-xs tracking-wide">
-                        {exp.startDate} &mdash; {exp.endDate}
-                      </span>
                     </div>
-                  </div>
-
-                  {/* Highlights */}
-                  <ul className="mb-6 space-y-2">
-                    {exp.highlights.map((highlight, i) => (
-                      <li
-                        key={i}
-                        className="font-body relative pl-4 text-sm leading-relaxed text-text-muted before:absolute before:left-0 before:top-2 before:h-1 before:w-1 before:rounded-full before:bg-accent/40"
-                      >
-                        {highlight}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2">
-                    {exp.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="font-mono rounded-md bg-accent/10 px-2.5 py-1 text-[11px] tracking-wide text-accent"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+                    <ul className="mt-3 max-w-[70ch] list-disc space-y-2 pl-4 text-sm leading-relaxed text-text-muted marker:text-accent">
+                      {r.highlights.map((h) => (
+                        <li key={h}>{h}</li>
+                      ))}
+                    </ul>
+                    <div className="mt-4">
+                      <TechList items={r.technologies} />
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

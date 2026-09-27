@@ -1,20 +1,7 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Serif, Outfit, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-
-const ibmPlexSerif = IBM_Plex_Serif({
-  weight: "700",
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-  display: "swap",
-});
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -22,15 +9,16 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const description =
+  "Portfolio of Sachin Nair, a data scientist and developer. Projects, work experience, and photography.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://svnair.dev"),
-  title: "Sachin Nair — Developer & Photographer",
-  description:
-    "Personal portfolio of Sachin Nair — developer, data scientist, and photographer.",
+  title: "Sachin Nair | Developer & Photographer",
+  description,
   openGraph: {
     title: "Sachin Nair",
-    description:
-      "Developer · Data Scientist · Photographer — Building beautiful, functional experiences.",
+    description,
     url: "https://svnair.dev",
     siteName: "Sachin Nair",
     locale: "en_US",
@@ -39,8 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sachin Nair",
-    description:
-      "Developer · Data Scientist · Photographer — Building beautiful, functional experiences.",
+    description,
   },
   icons: {
     icon: [
@@ -52,18 +39,20 @@ export const metadata: Metadata = {
   },
 };
 
+// Runs before first paint so a saved theme never flashes the wrong palette.
+// No saved choice leaves data-theme unset, and the CSS follows the system setting.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${ibmPlexSerif.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
-      suppressHydrationWarning
-    >
-      <head />
+    <html lang="en" className={jetbrainsMono.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         {children}
         {process.env.NEXT_PUBLIC_UMAMI_API_URL &&
