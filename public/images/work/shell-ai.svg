@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000"><rect width="1600" height="1000" fill="#0d1117"/><rect width="1600" height="56" fill="#161b22"/><circle cx="40" cy="28" r="9" fill="#ff5f57"/><circle cx="70" cy="28" r="9" fill="#febc2e"/><circle cx="100" cy="28" r="9" fill="#28c840"/><text x="800" y="36" text-anchor="middle" fill="#8b949e" font-size="20" font-family="ui-monospace,Menlo,Consolas,monospace">shell-ai — zsh</text>
+<g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="34"><text x="70" y="160" fill="#7ee787">~/projects $ <tspan fill="#e6edf3">ai "find every csv over 1gb changed this week"</tspan></text>
+<text x="70" y="230" fill="#8b949e">⠿ asking llama3.1:8b via ollama (local) ...</text>
+<rect x="60" y="270" width="1480" height="96" rx="10" fill="#161b22"/><text x="95" y="330" fill="#79c0ff">find . -name "*.csv" -size +1G -mtime -7</text>
+<text x="70" y="430" fill="#e6edf3">Run it? <tspan fill="#7ee787">[y]</tspan>es / <tspan fill="#ffa657">[e]</tspan>dit / <tspan fill="#ff7b72">[n]</tspan>o  y</text>
+<text x="70" y="500" fill="#e6edf3">./data/raw/traffic_2026_q3.csv</text><text x="70" y="550" fill="#e6edf3">./data/raw/ledger_part_07.csv</text><text x="70" y="600" fill="#e6edf3">./exports/audit_sample.csv</text>
+<text x="70" y="690" fill="#7ee787">~/projects $ <tspan fill="#e6edf3">ai "kill whatever is on port 3000"</tspan></text>
+<rect x="60" y="730" width="1480" height="96" rx="10" fill="#161b22"/><text x="95" y="790" fill="#79c0ff">lsof -ti tcp:3000 | xargs kill</text>
+<text x="70" y="900" fill="#7ee787">~/projects $ <tspan fill="#e6edf3">▍</tspan></text></g></svg>

@@ -14,31 +14,33 @@ No test suite exists in this project.
 
 ## Architecture
 
-**Stack:** Next.js 16 (static export) + React 19 + Tailwind CSS v4 + Phosphor icons, built with Bun. No animation library: motion is CSS (see Styling).
+**Stack:** Next.js 16 (static export) + React 19 + Tailwind CSS v4 + Phosphor icons, built with Bun. No animation library: motion is CSS plus one small rAF loop for the photo reel (see Styling).
 
 **Output:** `next build` produces `out/` (not `dist/`). The site is fully static — no server-side rendering, no API routes. `next.config.ts` sets `output: "export"`, `images.unoptimized: true`, and `agentRules: false` (stops `next dev` from appending a block to this file).
 
 **Pages:**
-- `/`: Hero → Projects → Experience → Contact (`components/sections/`). Sections are server components.
+- `/`: Hero → Photos → Projects → Experience → Contact. Sections in `components/sections/` are server components; the hero's contour map (`components/ContourMap.tsx`, generator in `lib/contours.ts`) and the photo reel (`components/PhotoReel.tsx`) are client components.
+- Hero: a contour map of one of ten famous mountains, picked at random per visit and named in the caption. Heights are stylised, not real terrain; the caption says "a model of". Lines trace in on load and fade out as the hero scrolls away (`view()` timeline, so `.hero` must stay `overflow: clip`, not `hidden`).
+- Photos: today's five in one level row that drifts slowly and loops (the set is rendered twice; the copy is `inert` and `aria-hidden`). Hover, touch, focus and the pause button stop it; reduced motion never starts it.
 - `/projects`: meta-refresh stub to `/#projects` (static export cannot 301), `noindex`.
 - `/photography`: daily five photos as tilted, borderless prints "tossed" onto a table (hand-placed `SLOTS` in `components/PhotoGallery.tsx`, `.toss` keyframes in globals.css; single tilted column on mobile), native `<dialog>` lightbox with arrow-key navigation.
 - `/resume`: embeds `/resume.pdf`.
 
-**Content data:** `experience.json` and `projects.json` at project root are the only data files. Edit these to update content. Personal info (name, email, social links) lives in `lib/config.ts`.
+**Content data:** `experience.json` and `projects.json` at project root are the only data files. Edit these to update content. Projects show newest first (highest `id`); each needs an `image` (previews live in `public/images/work/`). Personal info (name, email, social links) lives in `lib/config.ts`.
 
-**Photography:** the directory is volume-mounted at runtime, so it is empty at build time. `nginx.conf` serves `/photography/` as a JSON listing (`autoindex_format json`); `components/PhotoGallery.tsx` fetches it and picks five with `pickDaily` (`lib/photos.ts`, seeded PRNG from `lib/seededShuffle.ts` keyed by UTC date). In `bun dev` the fetch fails and the page falls back to an `fs.readdirSync` list passed from `app/photography/page.tsx`. `lib/photos.ts` must stay client-safe (no `fs`).
+**Photography:** the directory is volume-mounted at runtime, so it is empty at build time. `nginx.conf` serves `/photography/` as a JSON listing (`autoindex_format json`); `components/PhotoGallery.tsx` fetches it and picks five with `pickDaily` (`lib/photos.ts`, seeded PRNG from `lib/seededShuffle.ts` keyed by UTC date). In `bun dev` the fetch fails and the page falls back to an `fs.readdirSync` list (`lib/photos.server.ts`). `lib/photos.ts` must stay client-safe (no `fs`). Captions come from an optional `captions.json` in the same folder (`{"file.jpg": "Caption"}`); a missing entry falls back to the filename, title-cased.
 
 **Styling:** Tailwind CSS v4, configured in `app/globals.css` (no JS config).
-- Palette: raw values on `:root` via `light-dark(light, dark)`; `color-scheme` picks the side. `:root[data-theme]` forces a theme, otherwise the system preference applies. `@theme inline` maps them to `bg`, `surface`, `text`, `text-muted`, `accent`, `accent-ink`, `on-accent`, `line`. Never hardcode hex in components.
-- Dark: bg #120E18, surface #1E1828, text #ECE8F0, muted #9D94A5, accent #E4B55B. Light: #F4F1F5, #E7E1E9, #211925, #625968, #936514. Chosen by the user.
-- Light accent is 3.97:1 on surface, so accent-colored text uses `text-accent-ink` (#7F5711 in light).
-- Tech tags: `components/TechPill.tsx` hashes the name to `--tag-0..7-fg/bg`. All pairs checked at >= 4.5:1 in both themes; re-check if you change them.
-- `dark:` is a custom variant that follows the same rule as the palette.
-- Motion: hero entrance is CSS (`.rise`, `.rise-photo`) so it paints without JS; elements marked `data-build` get a one-time reverse-Tetris entrance (`components/BuildOnScroll.tsx` + `build-rise`/`build-fade` in globals.css). Only JS hides pieces, and only ones below the fold, so no-JS and reduced motion show content as-is. Avoid scroll listeners.
+- Palette: raw values on `:root` via `light-dark(light, dark)`; `color-scheme` picks the side. Light is the default and the system preference is ignored (user choice); only `:root[data-theme="dark"]` switches to dark. `@theme inline` maps them to `bg`, `surface`, `text`, `text-muted`, `accent`, `accent-ink`, `on-accent`, `line`. Never hardcode hex in components.
+- Moss palette, chosen by the user. Light: bg #DFE5D8, surface #EEF1E9, text #22301F, muted #4F5D4A, accent (teal) #0F5E63. Dark: #131912, #1B2319, #DFE5D8, #A5B09A, #72C4BE. Contour lines use `--contour` / `--contour-index`.
+- `dark:` is a custom variant matching `:root[data-theme="dark"]`.
+- Motion: the contour trace is the one authored moment; the theme switch is a view-transition cross-fade. Honor reduced motion everywhere.
 
-**Theme toggle:** `components/ThemeToggle.tsx` sets `data-theme` and `localStorage.theme`; an inline script in `app/layout.tsx` applies the saved value before paint. The icon swap is pure CSS, so the toggle has no React state.
+**Theme toggle:** `components/ThemeToggle.tsx` sets `data-theme="dark"` and `localStorage.theme = "dark"`, or clears both for light; an inline script in `app/layout.tsx` applies a saved dark before paint. The icon swap is pure CSS, so the toggle has no React state.
 
-**Fonts:** JetBrains Mono only, via `next/font/google` in `app/layout.tsx` as `--font-jetbrains`, mapped to `--font-sans` and `--font-mono`.
+**Logo:** "summit rings" (three contour rings on a teal tile). `components/Logo.tsx` draws it with theme tokens; `public/favicon.svg` is the fixed-colour master, and the PNG/ICO icons are rendered from it.
+
+**Fonts:** Young Serif (headings, `font-serif`) and Work Sans (body, `font-sans`), via `next/font/google` in `app/layout.tsx`.
 
 **Copy rule:** no em dashes anywhere in site copy (user requirement). CI greps `app components lib *.json README.md` and fails on one.
 
@@ -74,9 +76,9 @@ Avoid generic AI-generated aesthetics:
 - Cookie-cutter design that lacks context-specific character
 
 Focus on:
-- **Typography:** JetBrains Mono across the whole site is a deliberate user choice. Build hierarchy with weight, size, and tracking, not a second family.
-- **Color & Theme:** Dusk violet base with an amber accent, in both light and dark. Use the tokens; keep one accent.
-- **Motion:** One authored moment (the hero entrance) plus light scroll reveals. Prefer CSS over JS animation; honor reduced motion.
-- **Backgrounds:** Create depth with layered CSS gradients (see `body::before` in `globals.css`), not solid fills.
+- **Typography:** Young Serif for headings, Work Sans for everything else (user choice). No third family.
+- **Color & Theme:** Moss ground with one teal accent, light by default with a dark option. Use the tokens; keep one accent.
+- **Motion:** One authored moment (the contour trace) plus the drifting photo reel. Prefer CSS over JS animation; honor reduced motion.
+- **Backgrounds:** The contour map is the texture; sections sit on flat moss with a tone step (`surface`) for the projects sheet.
 
 Interpret creatively and make unexpected choices that feel genuinely designed for the context.

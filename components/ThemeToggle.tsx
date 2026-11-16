@@ -2,24 +2,22 @@
 
 import { Moon, Sun } from "@phosphor-icons/react";
 
-function isDark(): boolean {
-  const set = document.documentElement.dataset.theme;
-  if (set) return set === "dark";
-  return matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
-// No React state: the `dark:` variant in globals.css picks the icon, so the
-// server render is already correct and there is nothing to hydrate.
+// Light by default; the toggle stores "dark" or clears the key. No React
+// state: the `dark:` variant in globals.css picks the icon, so the server
+// render is already correct and there is nothing to hydrate.
 export default function ThemeToggle() {
   function toggle() {
-    const next = isDark() ? "light" : "dark";
+    const root = document.documentElement;
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
     const apply = () => {
-      document.documentElement.dataset.theme = next;
+      if (next === "dark") root.dataset.theme = "dark";
+      else delete root.dataset.theme;
       try {
-        localStorage.setItem("theme", next);
+        if (next === "dark") localStorage.setItem("theme", "dark");
+        else localStorage.removeItem("theme");
       } catch {}
     };
-    // Crossfade the whole page between themes (timing in globals.css).
+    // One even cross-fade of the whole page (timing in globals.css).
     // Browsers without view transitions, or with reduced motion on, switch instantly.
     if (
       !document.startViewTransition ||
@@ -37,12 +35,12 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Toggle light and dark theme"
-      title="Toggle theme"
-      className="grid h-9 w-9 place-items-center rounded-full text-text-muted transition-colors hover:bg-surface hover:text-text active:scale-95"
+      className="grid h-11 w-11 place-items-center rounded-full border border-line bg-bg transition-colors hover:border-accent hover:text-accent-ink"
     >
-      <Sun size={18} weight="bold" aria-hidden className="hidden dark:block" />
-      <Moon size={18} weight="bold" aria-hidden className="dark:hidden" />
+      <Moon size={20} aria-hidden className="dark:hidden" />
+      <Sun size={20} aria-hidden className="hidden dark:block" />
+      <span className="sr-only dark:hidden">Switch to dark theme</span>
+      <span className="sr-only hidden dark:inline">Switch to light theme</span>
     </button>
   );
 }

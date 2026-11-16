@@ -1,73 +1,83 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Check, Copy } from "@phosphor-icons/react";
 
 type Status = "idle" | "copied" | "failed";
 
 // Receives the spelled-out form ("name [at] host (dot) me") so the real
-// address never appears in the HTML. It is rebuilt only on click.
+// address never appears in the HTML. It is rebuilt only after hydration.
 const toAddress = (spelled: string) =>
   spelled.replace(/ \[at\] /g, "@").replace(/ \(dot\) /g, ".");
 
 export default function CopyEmail({ spelled }: { spelled: string }) {
+  // false on the server and during hydration, true after: the address only
+  // ever exists in the browser.
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  const address = hydrated ? toAddress(spelled) : null;
   const [status, setStatus] = useState<Status>("idle");
 
   useEffect(() => {
     if (status === "idle") return;
-    const t = setTimeout(() => setStatus("idle"), 2500);
+    const t = setTimeout(() => setStatus("idle"), 2000);
     return () => clearTimeout(t);
   }, [status]);
 
   async function copy() {
-    const address = toAddress(spelled);
     try {
-      await navigator.clipboard.writeText(address);
+      await navigator.clipboard.writeText(toAddress(spelled));
       setStatus("copied");
     } catch {
-      // Clipboard API needs a secure context and permission; the text stays visible to copy by hand.
+      // Clipboard API needs a secure context and permission; the address stays visible to copy by hand.
       setStatus("failed");
     }
   }
 
+  const shown = address ?? spelled;
+  const at = shown.indexOf("@");
+
   return (
-    <div className="mt-8">
-      <p className="flex flex-wrap items-baseline gap-x-2 text-sm sm:text-base">
-        <span className="text-text-muted">email:</span>
+    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3">
+      <a
+        href={address ? `mailto:${address}` : undefined}
+        className="font-serif text-[clamp(1.4rem,1rem+2.2vw,2.75rem)] break-words text-accent-ink"
+      >
+        {at > 0 ? (
+          <>
+            {shown.slice(0, at + 1)}
+            <wbr />
+            {shown.slice(at + 1)}
+          </>
+        ) : (
+          shown
+        )}
+      </a>
+      <span className="relative inline-flex">
         <button
           type="button"
           onClick={copy}
-          title="Copy email address"
-          aria-label={`${spelled}. Copy email address`}
-          className="group inline-flex items-baseline gap-2 rounded-md text-left font-bold break-words text-accent-ink decoration-dotted underline-offset-4 hover:underline"
+          aria-label="Copy email address"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 font-semibold transition-colors hover:border-accent hover:text-accent-ink"
         >
-          {spelled}
           {status === "copied" ? (
-            <Check
-              size={14}
-              weight="bold"
-              aria-hidden
-              className="shrink-0 self-center"
-            />
+            <Check size={18} weight="bold" aria-hidden className="text-accent-ink" />
           ) : (
-            <Copy
-              size={14}
-              weight="bold"
-              aria-hidden
-              className="shrink-0 self-center opacity-50 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-            />
+            <Copy size={18} aria-hidden />
           )}
+          <span aria-hidden>Copy</span>
         </button>
-      </p>
-      <p role="status" className="mt-2 min-h-4 text-xs text-text-muted">
-        {status === "copied" && "Copied to your clipboard."}
-        {status === "failed" && (
-          <>
-            Couldn&rsquo;t copy. The address is{" "}
-            <span className="select-all text-text">{toAddress(spelled)}</span>
-          </>
-        )}
-      </p>
+        <span
+          role="status"
+          className="absolute top-full left-1/2 mt-1.5 -translate-x-1/2 text-sm whitespace-nowrap text-text-muted"
+        >
+          {status === "copied" && "Copied"}
+          {status === "failed" && "Couldn't copy. Select the address instead."}
+        </span>
+      </span>
     </div>
   );
 }

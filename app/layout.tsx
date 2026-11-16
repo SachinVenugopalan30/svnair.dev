@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Work_Sans, Young_Serif } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const jetbrainsMono = JetBrains_Mono({
+const workSans = Work_Sans({
   subsets: ["latin"],
-  variable: "--font-jetbrains",
+  weight: ["400", "500", "600"],
+  variable: "--font-work-sans",
+  display: "swap",
+});
+
+const youngSerif = Young_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-young-serif",
   display: "swap",
 });
 
 const description =
-  "Portfolio of Sachin Nair, a data scientist and developer. Projects, work experience, and photography.";
+  "Sachin Nair: data scientist, learner, gamer, Leetcode hater and hobby photographer. Projects, experience and photographs.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://svnair.dev"),
-  title: "Sachin Nair | Developer & Photographer",
+  title: "Sachin Nair",
   description,
   openGraph: {
     title: "Sachin Nair",
@@ -37,11 +45,12 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
+  manifest: "/site.webmanifest",
 };
 
-// Runs before first paint so a saved theme never flashes the wrong palette.
-// No saved choice leaves data-theme unset, and the CSS follows the system setting.
-const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+// Runs before first paint so a saved dark theme never flashes light.
+// Light is the default whatever the system says; only a saved "dark" changes it.
+const themeScript = `try{if(localStorage.getItem("theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}`;
 
 export default function RootLayout({
   children,
@@ -51,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={jetbrainsMono.variable}
+      className={`${workSans.variable} ${youngSerif.variable}`}
       // Tells Next our CSS sets smooth scrolling, so it can turn it off for route changes.
       data-scroll-behavior="smooth"
       suppressHydrationWarning
