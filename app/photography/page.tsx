@@ -1,27 +1,17 @@
-import fs from "fs";
-import path from "path";
 import Navbar from "@/components/Navbar";
 import PhotoGallery from "@/components/PhotoGallery";
 import { ArrowUpRight, InstagramLogo } from "@phosphor-icons/react/dist/ssr";
-import { isPhoto } from "@/lib/photos";
+import { buildTimePhotos } from "@/lib/photos.server";
 import { siteConfig as config } from "@/lib/config";
 
 // "https://www.instagram.com/sachin_venugopalan" -> "@sachin_venugopalan"
 const instagramHandle = `@${new URL(config.socialMedia.instagram).pathname.replace(/\//g, "")}`;
 
 export const metadata = {
-  title: "Photography | Sachin Nair",
+  title: "Sachin Nair",
   description:
     "A rotating selection of five photographs by Sachin Nair, refreshed daily at midnight UTC.",
 };
-
-// Fallback list for `bun dev`, where nginx isn't around to list the folder.
-// In production the folder is mounted at runtime, so this is empty and the
-// gallery fetches nginx's JSON listing instead.
-function buildTimePhotos(): string[] {
-  const dir = path.join(process.cwd(), "public", "photography");
-  return fs.existsSync(dir) ? fs.readdirSync(dir).filter(isPhoto) : [];
-}
 
 export default function PhotographyPage() {
   return (

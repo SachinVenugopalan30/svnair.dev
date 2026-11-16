@@ -5,7 +5,8 @@
     "description": "Personal portfolio built with Next.js and Tailwind CSS, with a light and dark theme and a daily photo rotation.",
     "technologies": ["Next.js", "Tailwind CSS", "TypeScript"],
     "githubUrl": "https://github.com/SachinVenugopalan30/svnair.dev",
-    "liveUrl": "https://svnair.dev"
+    "liveUrl": "https://svnair.dev",
+    "image": "/images/work/portfolio.svg"
   },
   {
     "id": 2,
@@ -13,7 +14,8 @@
     "description": "iOS application for aiding disaster response/social workers quickly fill victims' information via voice agents",
     "technologies": ["React-Native", "Gemma4", "Cactus (YC S25)"],
     "githubUrl": "https://github.com/SachinVenugopalan30/voice-agents-hack",
-    "liveUrl": ""
+    "liveUrl": "",
+    "image": "/images/work/oasis.svg"
   },
   {
     "id": 3,
@@ -21,38 +23,26 @@
     "description": "Simple CLI tool to use local Large Language Models to convert natural language to Bash/other Terminal commands.",
     "technologies": ["Go", "Ollama"],
     "githubUrl": "https://github.com/SachinVenugopalan30/shell-ai",
-    "liveUrl": ""
+    "liveUrl": "",
+    "image": "/images/work/shell-ai.svg"
   },
   {
     "id": 4,
     "title": "JobGlove",
     "description": "Docker containerized web application to tailor job resumes based on job descriptions using multiple AI Providers.",
-    "technologies": [
-      "Python",
-      "React.js",
-      "FastAPI",
-      "Gemini",
-      "OpenAI",
-      "Claude",
-      "Groq",
-      "Ollama"
-    ],
+    "technologies": ["Python", "React.js", "FastAPI", "Gemini", "OpenAI", "Claude", "Groq", "Ollama"],
     "githubUrl": "https://github.com/SachinVenugopalan30/JobGlove",
-    "liveUrl": ""
+    "liveUrl": "",
+    "image": "/images/work/jobglove.svg"
   },
   {
     "id": 5,
     "title": "Drift Guard",
     "description": "Full-Stack Web Application for monitoring and alerting on data drift in machine learning models, built with NextJS and Python.",
-    "technologies": [
-      "NextJS",
-      "Python",
-      "MLflow",
-      "SQLite",
-      "Data Version Control"
-    ],
+    "technologies": ["NextJS", "Python", "MLflow", "SQLite", "Data Version Control"],
     "githubUrl": "https://github.com/SachinVenugopalan30/Drift-Guard",
-    "liveUrl": ""
+    "liveUrl": "",
+    "image": "/images/work/drift-guard.svg"
   },
   {
     "id": 6,
@@ -60,21 +50,25 @@
     "description": "Self-hosted, privacy focused recipe-extraction app from short form cooking content",
     "technologies": ["React", "Python", "Whisper", "Valkey"],
     "githubUrl": "https://github.com/SachinVenugopalan30/sous-clip",
-    "liveUrl": "https://sous-clip-web.pages.dev/"
+    "liveUrl": "https://sous-clip-web.pages.dev/",
+    "image": "/images/work/sous-clip.svg"
   },
   {
     "id": 7,
     "title": "Paper Trail",
     "description": "A hybrid PDF/OCR extraction pipeline that processes open-source bug reports, with a Neo4j knowledge graph and a hybrid retrieval RAG pipeline.",
-    "technologies": [
-      "Python",
-      "LangChain",
-      "Streamlit",
-      "Neo4j",
-      "ChromaDB",
-      "GLM-OCR"
-    ],
+    "technologies": ["Python", "LangChain", "Streamlit", "Neo4j", "ChromaDB", "GLM-OCR"],
     "githubUrl": "https://github.com/SachinVenugopalan30/Paper-Trail",
-    "liveUrl": ""
+    "liveUrl": "",
+    "image": "/images/work/paper-trail.svg"
+  },
+  {
+    "id": 8,
+    "title": "Cupful",
+    "description": "Self Hosted Calorie and Macro Tracker - Explain your meals to an LLM and get an estimate on the food you just ate! With Google Health Integration.",
+    "technologies": ["Rust", "Axum", "Sveltekit"],
+    "githubUrl": "https://github.com/SachinVenugopalan30/Cupful",
+    "liveUrl": "",
+    "image": "/images/work/cupful.svg"
   }
 ]

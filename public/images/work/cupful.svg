@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif"><rect width="1600" height="1000" fill="#fbf8f3"/>
+<text x="80" y="92" fill="#1c1917" font-size="34" font-weight="700">cupful</text><text x="230" y="92" fill="#78716c" font-size="22">Today · 1,640 of 2,200 kcal</text>
+<rect x="80" y="150" width="760" height="780" rx="24" fill="#fff" stroke="#e7e5e4" stroke-width="2"/>
+<rect x="300" y="200" width="500" height="118" rx="22" fill="#1c1917"/><text x="330" y="248" fill="#fff" font-size="24">Two eggs scrambled with butter,</text><text x="330" y="288" fill="#fff" font-size="24">a slice of sourdough and black coffee</text>
+<rect x="120" y="350" width="560" height="300" rx="22" fill="#f5f5f4"/><text x="150" y="398" fill="#1c1917" font-size="24" font-weight="700">Estimated: 412 kcal</text>
+<g font-size="22" fill="#44403c"><text x="150" y="450">Scrambled eggs (2)</text><text x="640" y="450" text-anchor="end">182</text><text x="150" y="495">Butter, 1 tsp</text><text x="640" y="495" text-anchor="end">34</text><text x="150" y="540">Sourdough, 1 slice</text><text x="640" y="540" text-anchor="end">191</text><text x="150" y="585">Black coffee</text><text x="640" y="585" text-anchor="end">5</text></g>
+<rect x="150" y="610" width="150" height="2" fill="#e7e5e4"/>
+<rect x="120" y="840" width="680" height="64" rx="32" fill="#f5f5f4"/><text x="152" y="881" fill="#a8a29e" font-size="22">Describe what you ate…</text><circle cx="764" cy="872" r="24" fill="#ea580c"/>
+<g transform="translate(1180 330)" fill="none" stroke-width="34" stroke-linecap="round"><circle r="170" stroke="#f5f5f4"/><circle r="170" stroke="#ea580c" stroke-dasharray="800 1068" transform="rotate(-90)"/><circle r="122" stroke="#f5f5f4"/><circle r="122" stroke="#65a30d" stroke-dasharray="520 767" transform="rotate(-90)"/><circle r="74" stroke="#f5f5f4"/><circle r="74" stroke="#0891b2" stroke-dasharray="260 465" transform="rotate(-90)"/></g>
+<g font-size="24"><circle cx="960" cy="610" r="10" fill="#ea580c"/><text x="980" y="618" fill="#1c1917">Protein 96 / 130 g</text><circle cx="960" cy="660" r="10" fill="#65a30d"/><text x="980" y="668" fill="#1c1917">Carbs 182 / 260 g</text><circle cx="960" cy="710" r="10" fill="#0891b2"/><text x="980" y="718" fill="#1c1917">Fat 52 / 75 g</text></g>
+<rect x="940" y="790" width="580" height="80" rx="16" fill="#ecfdf5"/><text x="970" y="840" fill="#047857" font-size="22">Synced with Google Health · 8,412 steps</text>
+</svg>

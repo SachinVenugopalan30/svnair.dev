@@ -1,14 +1,1 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Dark background -->
-  <rect width="64" height="64" rx="14" fill="#0A0A0B"/>
-
-  <!-- Subtle aperture ring -->
-  <circle cx="32" cy="32" r="24" stroke="#C4503A" stroke-width="1.5" opacity="0.25" fill="none"/>
-
-  <!-- Code brackets in accent color -->
-  <path d="M18 22 L12 32 L18 42" stroke="#C4503A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <path d="M46 22 L52 32 L46 42" stroke="#C4503A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-
-  <!-- S monogram -->
-  <text x="32" y="38" text-anchor="middle" font-size="22" font-weight="700" fill="#E8E4E0" font-family="'IBM Plex Serif', Georgia, serif">S</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0f5e63"/><g fill="none" stroke="#dfe5d8" stroke-linejoin="round" stroke-linecap="round"><path stroke-width="3" d="M10 40c-1-11 6-24 19-27 12-3 25 3 26 15 1 11-8 21-21 23-12 2-23-1-24-11Z"/><path stroke-width="3" d="M20 37c-1-7 4-14 12-16 8-2 15 2 15 9 1 7-5 12-13 13-7 1-13-1-14-6Z"/><path stroke-width="3" d="M30 33c0-3 2-6 6-6 3 0 5 2 5 4 0 3-3 5-6 5-3 0-5-1-5-3Z"/></g></svg>

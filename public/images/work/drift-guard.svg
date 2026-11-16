@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif"><rect width="1600" height="1000" fill="#f6f7f9"/><rect width="300" height="1000" fill="#111827"/><text x="40" y="70" fill="#fff" font-size="30" font-weight="700">Drift Guard</text>
+<g fill="#9ca3af" font-size="22"><text x="40" y="160" fill="#fff">Overview</text><text x="40" y="210">Models</text><text x="40" y="260">Alerts</text><text x="40" y="310">Datasets (DVC)</text><text x="40" y="360">MLflow runs</text></g>
+<text x="360" y="90" fill="#111827" font-size="38" font-weight="700">churn-xgb · v14</text><text x="360" y="130" fill="#6b7280" font-size="22">Population stability index, last 30 days</text>
+<rect x="1240" y="56" width="300" height="64" rx="8" fill="#fee2e2"/><text x="1390" y="97" text-anchor="middle" fill="#b91c1c" font-size="24" font-weight="700">2 features drifting</text>
+<rect x="360" y="170" width="1180" height="430" rx="12" fill="#fff"/><line x1="400" y1="430" x2="1500" y2="430" stroke="#f59e0b" stroke-dasharray="10 8" stroke-width="3"/><text x="1500" y="420" text-anchor="end" fill="#b45309" font-size="20">alert threshold 0.20</text>
+<polyline fill="none" stroke="#2563eb" stroke-width="5" points="400,540 450,532 500,545 550,528 600,536 650,520 700,525 750,510 800,515 850,498 900,490 950,470 1000,474 1050,452 1100,440 1150,418 1200,402 1250,380 1300,372 1350,340 1400,322 1450,300 1500,286"/>
+<polyline fill="none" stroke="#9ca3af" stroke-width="4" points="400,560 500,556 600,562 700,552 800,558 900,550 1000,556 1100,548 1200,552 1300,546 1400,551 1500,544"/>
+<g font-size="22"><rect x="360" y="630" width="1180" height="330" rx="12" fill="#fff"/><text x="400" y="690" fill="#6b7280">Feature</text><text x="900" y="690" fill="#6b7280">PSI</text><text x="1150" y="690" fill="#6b7280">Status</text>
+<text x="400" y="750" fill="#111827">tenure_months</text><text x="900" y="750" fill="#111827">0.31</text><text x="1150" y="750" fill="#b91c1c">Drifting</text>
+<text x="400" y="810" fill="#111827">support_calls_90d</text><text x="900" y="810" fill="#111827">0.24</text><text x="1150" y="810" fill="#b91c1c">Drifting</text>
+<text x="400" y="870" fill="#111827">plan_tier</text><text x="900" y="870" fill="#111827">0.06</text><text x="1150" y="870" fill="#15803d">Stable</text>
+<text x="400" y="930" fill="#111827">monthly_spend</text><text x="900" y="930" fill="#111827">0.04</text><text x="1150" y="930" fill="#15803d">Stable</text></g></svg>

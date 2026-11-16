@@ -3,7 +3,7 @@ import Link from "next/link";
 // Projects now live on the homepage. Static export can't send a 301,
 // so this page forwards old links and bookmarks with a meta refresh.
 export const metadata = {
-  title: "Projects | Sachin Nair",
+  title: "Sachin Nair",
   robots: { index: false },
   alternates: { canonical: "/#projects" },
 };

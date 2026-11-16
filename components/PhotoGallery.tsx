@@ -2,28 +2,14 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CaretLeft, CaretRight, X } from "@phosphor-icons/react";
-import { altFromFilename, isPhoto, pickDaily } from "@/lib/photos";
+import {
+  altFromFilename,
+  listRuntimePhotos,
+  photoSrc as src,
+  pickDaily,
+} from "@/lib/photos";
 
 type Status = "loading" | "ready";
-
-// nginx serves /photography/ as JSON (autoindex_format json). Anywhere else,
-// such as `bun dev`, the request fails and the build-time list is used.
-async function listRuntimePhotos(): Promise<string[] | null> {
-  try {
-    const res = await fetch("/photography/", {
-      headers: { Accept: "application/json" },
-    });
-    if (!res.ok) return null;
-    const entries: { name: string; type: string }[] = await res.json();
-    return entries
-      .filter((e) => e.type === "file" && isPhoto(e.name))
-      .map((e) => e.name);
-  } catch {
-    return null;
-  }
-}
-
-const src = (name: string) => `/photography/${encodeURIComponent(name)}`;
 
 // Where each print lands on the "table" (desktop), its resting tilt, and the
 // off-screen spot it is tossed from with how far it spins on the way in.

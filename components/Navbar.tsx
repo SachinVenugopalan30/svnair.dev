@@ -7,13 +7,13 @@ import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
+  { href: "/#photos", label: "Photos" },
   { href: "/#projects", label: "Projects" },
   { href: "/#experience", label: "Experience" },
-  { href: "/photography", label: "Photography" },
-  { href: "/resume", label: "Resume" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/resume", label: "Résumé" },
 ];
 
+// Sits over the hero (the map fades out beneath it), so it has no bar of its own.
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -36,26 +36,26 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-bg/80 backdrop-blur-lg">
+    <header className="relative z-40">
       <nav
         aria-label="Main"
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"
+        className="flex items-center justify-between gap-4 px-(--gutter) py-4"
       >
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-sm font-bold tracking-tight text-text"
+          className="flex items-center gap-2.5 font-semibold text-text no-underline"
         >
           <Logo />
-          sachin nair
+          Sachin Nair
         </Link>
 
-        <div className="flex items-center gap-1">
-          <ul className="hidden items-center gap-1 md:flex">
+        <div className="flex items-center gap-3 md:gap-6">
+          <ul className="hidden items-center gap-6 md:flex">
             {navLinks.map(({ href, label }) => (
               <li key={href}>
                 <Link
                   href={href}
-                  className="rounded-full px-3 py-1.5 text-xs text-text-muted transition-colors hover:bg-surface hover:text-text"
+                  className="font-medium text-text no-underline transition-colors hover:text-accent-ink"
                 >
                   {label}
                 </Link>
@@ -71,13 +71,9 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="grid h-9 w-9 place-items-center rounded-full text-text md:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-line bg-bg md:hidden"
           >
-            {menuOpen ? (
-              <X size={20} aria-hidden />
-            ) : (
-              <List size={20} aria-hidden />
-            )}
+            {menuOpen ? <X size={20} aria-hidden /> : <List size={20} aria-hidden />}
           </button>
         </div>
       </nav>
@@ -85,14 +81,14 @@ export default function Navbar() {
       {menuOpen && (
         <ul
           id="mobile-menu"
-          className="flex h-[calc(100dvh-4rem)] flex-col gap-1 border-t border-line bg-bg px-4 pt-6 md:hidden"
+          className="fixed inset-x-0 top-[76px] bottom-0 flex flex-col gap-1 bg-bg px-(--gutter) pt-6 md:hidden"
         >
           {navLinks.map(({ href, label }) => (
             <li key={href}>
               <Link
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className="block py-3 text-2xl font-bold tracking-tight text-text"
+                className="block py-3 font-serif text-4xl text-text no-underline"
               >
                 {label}
               </Link>
