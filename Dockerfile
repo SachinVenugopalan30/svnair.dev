@@ -1,6 +1,6 @@
 # Multi-stage build for Next.js project with Bun
 # Same Bun as CI (deploy.yml). 1.3.14 segfaults during `next build` on linux/arm64.
-FROM oven/bun:1.4.2 AS builder
+FROM oven/bun:1.4.4 AS builder
 
 # Set working directory
 WORKDIR /app
