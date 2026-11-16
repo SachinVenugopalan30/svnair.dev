@@ -9,7 +9,6 @@ Network=traefik.network
 # Pulls a newer image on every start, so `systemctl restart` is the whole deploy.
 Pull=newer
 
-Volume=/root/PersonalBlog/public/profile.jpg:/usr/share/nginx/html/profile.jpg:ro
 Volume=/root/PersonalBlog/public/photography:/usr/share/nginx/html/photography:ro
 Volume=/root/PersonalBlog/data/resume.pdf:/usr/share/nginx/html/resume.pdf:ro
 

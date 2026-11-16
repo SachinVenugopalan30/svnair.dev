@@ -52,13 +52,17 @@ bun run lint
 bun run build    # static site in out/
 ```
 
-`public/profile.jpg`, `public/resume.pdf`, and `public/photography/` are gitignored. Put local copies there to see them in dev.
+`public/resume.pdf` and `public/photography/` are gitignored. Put local copies there to see them in dev.
 
 ## Photography
 
 The photo folder is mounted into the container at runtime, so the build never sees the photos. Instead, Nginx serves a JSON listing of `/photography/` (`autoindex_format json` in `nginx.conf`). The gallery fetches that list in the browser and picks the day's five.
 
-To add photos, copy them to `/root/PersonalBlog/public/photography/` on the server. They appear on the next page load. No rebuild or restart is needed. Subfolders are not shown and their listings return 404, but files inside them can still be fetched by exact URL, so keep only publishable photos there. Alt text comes from the filename (`sunset_ridge.jpg` becomes "sunset ridge").
+To add photos, copy them to `/root/PersonalBlog/public/photography/` on the server. They appear on the next page load. No rebuild or restart is needed. Subfolders are not shown and their listings return 404, but files inside them can still be fetched by exact URL, so keep only publishable photos there. Use `.jpg`, `.jpeg`, `.png` or `.webp`; files are served as uploaded, so resize to about 2000px on the long edge first.
+
+Captions (also used as alt text) come from an optional `captions.json` in the same folder, mapping each filename to its caption: `{"sunset_ridge.jpg": "Sunset over the ridge, Arizona"}`. A photo without an entry falls back to its filename, title-cased ("Sunset Ridge").
+
+Browsers cache photos for a day; the listing and `captions.json` are never cached. So new uploads and caption edits show up on the next load, and a photo replaced under the same name shows up within a day.
 
 In `bun dev` there is no Nginx, so the page falls back to the list it read from `public/photography/` at render time.
 
@@ -72,11 +76,10 @@ In `bun dev` there is no Nginx, so the page falls back to the list it read from 
 
 The `Dockerfile` has two stages. Bun builds `out/`, and `nginx:alpine` serves it.
 
-On the server, three paths are mounted into the container read-only (see `quadlet/portfolio.container`):
+On the server, two paths are mounted into the container read-only (see `quadlet/portfolio.container`):
 
 | Server path | Served at |
 |---|---|
-| `/root/PersonalBlog/public/profile.jpg` | `/profile.jpg` |
 | `/root/PersonalBlog/public/photography/` | `/photography/` |
 | `/root/PersonalBlog/data/resume.pdf` | `/resume.pdf` |
 

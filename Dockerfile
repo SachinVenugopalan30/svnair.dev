@@ -48,6 +48,10 @@ COPY --from=builder /app/out /usr/share/nginx/html
 # Copy custom nginx configuration (make sure it sets correct MIME types)
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Fail the image build (and so the deploy) on a broken config, instead of
+# shipping a container that crash-loops on start.
+RUN nginx -t
+
 # Expose port 80
 EXPOSE 80
 
